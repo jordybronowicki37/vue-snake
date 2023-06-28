@@ -15,7 +15,7 @@ function SetupTimer() {
   clearInterval(timerId.value);
   timerId.value = setInterval(NextTimeStep, 350 * Math.pow(0.98, score.value));
 }
-//SetupTimer();
+SetupTimer();
 
 function NextTimeStep() {
   MoveForward(snakeGameData.value)

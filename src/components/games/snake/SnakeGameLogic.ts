@@ -22,6 +22,7 @@ export function SetupGame(): SnakeGameData {
     const gameData: SnakeGameData = {
         score: 0,
         gameOver: false,
+        queuedMoves: [],
         fruits: [],
         snakeHead: { y: GridHeightMiddle, x: GridWidthMiddle },
         snakeBody: [ {y: GridHeightMiddle + 1, x: GridWidthMiddle} ],
@@ -38,6 +39,9 @@ export function SetupGame(): SnakeGameData {
 }
 
 export function MoveForward(gameData: SnakeGameData): SnakeGameData {
+    let newDirection = gameData.queuedMoves.shift();
+    if (newDirection) gameData.direction = newDirection;
+
     if (CheckForBorder(gameData)) {
         gameData.gameOver = true;
         return gameData;
@@ -67,17 +71,22 @@ export function MoveForward(gameData: SnakeGameData): SnakeGameData {
     return gameData;
 }
 
-export function ChangeDirection(gameData: SnakeGameData, direction: SnakeGameDirections): SnakeGameData {
-    if (gameData.direction === "UP" || gameData.direction === "DOWN") {
+export function ChangeDirection(gameData: SnakeGameData, direction: SnakeGameDirections) {
+    const { queuedMoves } = gameData;
+    let actualDirection = queuedMoves[queuedMoves.length - 1];
+    if (!actualDirection) actualDirection = gameData.direction;
+
+    console.log(actualDirection);
+
+    if (actualDirection === "UP" || actualDirection === "DOWN") {
         if (direction === "LEFT" || direction === "RIGHT") {
-            gameData.direction = direction;
+            queuedMoves.push(direction);
         }
     } else {
         if (direction === "UP" || direction === "DOWN") {
-            gameData.direction = direction;
+            queuedMoves.push(direction);
         }
     }
-    return gameData;
 }
 
 function CheckForBorder(gameData: SnakeGameData): boolean {

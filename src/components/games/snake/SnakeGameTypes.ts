@@ -6,8 +6,8 @@ export type SnakeGameData = {
     score: number;
     gameOver: boolean;
 
+    queuedMoves: SnakeGameDirections[];
     grid: GridData;
-
     fruits: GridCellLocation[];
     snakeBody: GridCellLocation[];
     snakeHead: GridCellLocation;
