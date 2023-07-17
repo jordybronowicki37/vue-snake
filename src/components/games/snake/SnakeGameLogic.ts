@@ -72,10 +72,10 @@ export function SetupGame(): SnakeGameData {
         gameOver: false,
         queuedMoves: [],
         fruits: [],
-        snakeHead: { y: GridHeightMiddle, x: GridWidthMiddle, color: "GREEN", direction: "UP" },
         snakeBody: [
-            {y: GridHeightMiddle + 2, x: GridWidthMiddle, color: "GREEN", direction: "UP"},
-            {y: GridHeightMiddle + 1, x: GridWidthMiddle, color: "GREEN", direction: "UP"},
+            { y: GridHeightMiddle + 2, x: GridWidthMiddle, color: "GREEN", direction: "UP" },
+            { y: GridHeightMiddle + 1, x: GridWidthMiddle, color: "GREEN", direction: "UP" },
+            { y: GridHeightMiddle, x: GridWidthMiddle, color: "GREEN", direction: "UP" },
         ],
         direction: "UP",
         grid
@@ -85,7 +85,7 @@ export function SetupGame(): SnakeGameData {
     for (let i = 0; i < FruitAmount; i++) {
         SetupNewFruitLocation(gameData);
     }
-    InsertSnakeBodyPiecesIntoGrid(grid, gameData.snakeHead, gameData.snakeBody);
+    InsertSnakeBodyPiecesIntoGrid(grid, gameData.snakeBody);
 
     return gameData;
 }
@@ -113,12 +113,12 @@ export function MoveForward(gameData: SnakeGameData): SnakeGameData {
     }
 
     gameData.snakeBody.shift();
-    gameData.snakeBody.push(gameData.snakeHead);
-    gameData.snakeHead = GetNewHeadPosition(gameData);
+    const snakeHead = GetNewHeadPosition(gameData)
+    gameData.snakeBody.push(snakeHead);
 
     ResetGrid(gameData.grid);
     InsertValuesIntoGrid(gameData.grid, gameData.fruits, "F");
-    InsertSnakeBodyPiecesIntoGrid(gameData.grid, gameData.snakeHead, gameData.snakeBody);
+    InsertSnakeBodyPiecesIntoGrid(gameData.grid, gameData.snakeBody);
 
     return gameData;
 }
@@ -140,7 +140,8 @@ export function ChangeDirection(gameData: SnakeGameData, direction: SnakeGameDir
 }
 
 function CheckForBorder(gameData: SnakeGameData): boolean {
-    const { direction, snakeHead } = gameData;
+    const { direction, snakeBody } = gameData;
+    const snakeHead = gameData.snakeBody[snakeBody.length-1];
 
     switch (direction) {
         case "UP":
@@ -155,7 +156,8 @@ function CheckForBorder(gameData: SnakeGameData): boolean {
 }
 
 function CheckForSnake(gameData: SnakeGameData): boolean {
-    const { direction, grid, snakeHead} = gameData;
+    const { direction, grid, snakeBody} = gameData;
+    const snakeHead = gameData.snakeBody[snakeBody.length-1];
     let nextPosition: string;
 
     switch (direction) {
@@ -175,7 +177,8 @@ function CheckForSnake(gameData: SnakeGameData): boolean {
 }
 
 function CheckForFruit(gameData: SnakeGameData): GridCellLocation | undefined {
-    const { direction, fruits, snakeHead } = gameData;
+    const { direction, fruits, snakeBody } = gameData;
+    const snakeHead = gameData.snakeBody[snakeBody.length-1];
 
     switch (direction) {
         case "UP":
@@ -190,7 +193,8 @@ function CheckForFruit(gameData: SnakeGameData): GridCellLocation | undefined {
 }
 
 function GetNewHeadPosition(gameData: SnakeGameData): SnakePieceCell {
-    const { direction, snakeHead } = gameData;
+    const { direction, snakeBody } = gameData;
+    const snakeHead = gameData.snakeBody[snakeBody.length-1];
 
     switch (direction) {
         case "UP":
@@ -244,8 +248,10 @@ function GenerateTypeIndex(snakePiece: SnakePieceCell, pieceType: SnakePieceType
     return `${pieceType[0]}${snakePiece.color[0]}${snakePiece.direction[0]}`;
 }
 
-function InsertSnakeBodyPiecesIntoGrid(gameGrid: GridData, snakeHead: SnakePieceCell, snakeBody: SnakePieceCell[]) {
+function InsertSnakeBodyPiecesIntoGrid(gameGrid: GridData, snakeBody: SnakePieceCell[]) {
     snakeBody = [...snakeBody].reverse();
+    const snakeHead: SnakePieceCell = snakeBody[0];
+    snakeBody.shift();
     InsertValueIntoGrid(gameGrid, snakeHead, GenerateTypeIndex(snakeHead, "HEAD"));
 
     for (let i = 0; i < snakeBody.length; i++) {

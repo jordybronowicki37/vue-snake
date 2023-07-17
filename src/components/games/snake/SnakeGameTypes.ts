@@ -17,6 +17,5 @@ export type SnakeGameData = {
     grid: GridData;
     fruits: GridCellLocation[];
     snakeBody: SnakePieceCell[];
-    snakeHead: SnakePieceCell;
     direction: SnakeGameDirections;
 }
