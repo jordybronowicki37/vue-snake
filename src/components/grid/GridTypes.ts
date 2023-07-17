@@ -1,7 +1,9 @@
+import {CSSProperties} from "vue";
+
 export type GridData = string[][];
 
 export type CellStyles = {
-    [key: string]: string;
+    [key: string]: CSSProperties;
 }
 
 export type GridCellLocation = {

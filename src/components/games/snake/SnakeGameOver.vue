@@ -33,7 +33,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-
+  z-index: 1;
   color: #ffff;
   background-color: #2226;
   backdrop-filter: blur(0.2rem);
