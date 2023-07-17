@@ -2,12 +2,12 @@
 import Grid from "../../grid/Grid.vue";
 import {ref} from "vue";
 import {SnakeGameData} from "./SnakeGameTypes.ts";
-import {ChangeDirection, MoveForward, SetupGame, SnakeGameCellStyles, GridHeight, GridWidth} from "./SnakeGameLogic.ts";
+import {ChangeDirection, MoveForward, SetupGame, SnakeGameCellStyles} from "./SnakeGameLogic.ts";
 import SnakeGameOver from "./SnakeGameOver.vue";
 
-const snakeGameData = ref<SnakeGameData>(SetupGame());
+const snakeGameData = ref<SnakeGameData>(SetupGame({}));
 const timerId = ref<number>(0);
-const score = ref<number>(snakeGameData.value.score);
+const score = ref<number>(0);
 const highScore = ref<number>(Number(localStorage.getItem("snakeHighScore")));
 const gameOverMessage = ref<string>("");
 
@@ -23,8 +23,9 @@ function NextTimeStep() {
     GenerateNewMessage()
     clearInterval(timerId.value);
   }
-  if (score.value !== snakeGameData.value.score) {
-    score.value = snakeGameData.value.score;
+  const totalScore = snakeGameData.value.players.map(v => v.score).reduce((a, b) => a + b, 0);
+  if (score.value !== totalScore) {
+    score.value = totalScore;
     if (score.value > highScore.value) {
       localStorage.setItem("snakeHighScore", String(score.value));
       highScore.value = score.value;
@@ -52,25 +53,58 @@ function GenerateNewMessage() {
 
 function StartNewGame() {
   clearInterval(timerId.value);
-  snakeGameData.value = SetupGame();
+  snakeGameData.value = SetupGame({});
   score.value = 0;
   SetupTimer();
+}
+
+function HandleButtonClick(e: KeyboardEvent) {
+  switch (e.key) {
+    case "Enter":
+      StartNewGame();
+      break;
+    case "w":
+      ChangeDirection(snakeGameData.value, 'UP', 0)
+      break;
+    case "a":
+      ChangeDirection(snakeGameData.value, 'LEFT', 0)
+      break;
+    case "s":
+      ChangeDirection(snakeGameData.value, 'DOWN', 0)
+      break;
+    case "d":
+      ChangeDirection(snakeGameData.value, 'RIGHT', 0)
+      break;
+  }
+  if (snakeGameData.value.players.length === 1) return;
+  switch (e.key) {
+    case "ArrowUp":
+      ChangeDirection(snakeGameData.value, 'UP', 1)
+      break;
+    case "ArrowLeft":
+      ChangeDirection(snakeGameData.value, 'LEFT', 1)
+      break;
+    case "ArrowDown":
+      ChangeDirection(snakeGameData.value, 'DOWN', 1)
+      break;
+    case "ArrowRight":
+      ChangeDirection(snakeGameData.value, 'RIGHT', 1)
+      break;
+  }
 }
 </script>
 
 <template>
-  <div tabindex="0" autofocus class="snake-game-container"
-       @keydown.enter="StartNewGame()"
-      @keydown.space="MoveForward(snakeGameData)"
-      @keydown.up="ChangeDirection(snakeGameData, 'UP')"
-      @keydown.left="ChangeDirection(snakeGameData, 'LEFT')"
-      @keydown.down="ChangeDirection(snakeGameData, 'DOWN')"
-      @keydown.right="ChangeDirection(snakeGameData, 'RIGHT')">
+  <div tabindex="0" autofocus class="snake-game-container" @keydown="HandleButtonClick($event)">
     <SnakeGameOver v-bind:show="snakeGameData.gameOver" v-bind:message="gameOverMessage" v-bind:score="score"/>
     <div class="grid-wrapper">
       <div class="score-value">High score: {{highScore}}</div>
       <div class="score-value">Current score: {{score}}</div>
-      <Grid v-bind:data="snakeGameData.grid" v-bind:cellStyles="SnakeGameCellStyles" v-bind:height="GridHeight" v-bind:width="GridWidth"/>
+      <Grid
+          v-bind:data="snakeGameData.grid"
+          v-bind:cellStyles="SnakeGameCellStyles"
+          v-bind:height="snakeGameData.options.gridHeight"
+          v-bind:width="snakeGameData.options.gridWidth"/>
     </div>
   </div>
 </template>

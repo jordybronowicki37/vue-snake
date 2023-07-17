@@ -1,10 +1,20 @@
 import {CellStyles, GridCellData, GridCellLocation, GridData} from "../../grid/GridTypes.ts";
-import {SnakePieceType, SnakeGameData, SnakeGameDirections, SnakePieceCell, SnakeColors} from "./SnakeGameTypes.ts";
+import {
+    SnakePieceType,
+    SnakeGameData,
+    SnakeGameDirections,
+    SnakePieceCell,
+    SnakeColors,
+    SnakeGameOptions, SnakePlayer, AllSnakeColors, AllSnakePieceTypes, AllSnakeDirections
+} from "./SnakeGameTypes.ts";
 import {CSSProperties} from "vue";
 
-export const GridHeight = 25;
-export const GridWidth = 25;
-export const FruitAmount = 4;
+const standardOptions: SnakeGameOptions = {
+    gridHeight: 25,
+    gridWidth: 25,
+    fruitAmount: 4,
+    playerAmount: 1,
+}
 
 export const SnakeGameCellStyles: CellStyles = {
     ".": {
@@ -16,15 +26,12 @@ export const SnakeGameCellStyles: CellStyles = {
 }
 
 function GenerateAssetsList(): CellStyles {
-    const colors: SnakeColors[] = ["GREEN", "BLUE"];
-    const snakePieceTypes: SnakePieceType[] = ["HEAD", "STRAIGHT", "CURVE", "TAIL"];
-    const directions: SnakeGameDirections[] = ["UP", "DOWN", "LEFT", "RIGHT"];
     let styles: CellStyles = {};
 
     // Create all combinations of assets
-    for (const color of colors) {
-        for (const pieceType of snakePieceTypes) {
-            for (const direction of directions) {
+    for (const color of AllSnakeColors) {
+        for (const pieceType of AllSnakePieceTypes) {
+            for (const direction of AllSnakeDirections) {
                 const capColor = color[0].toUpperCase() + color.slice(1).toLowerCase();
                 const capPieceType = pieceType[0].toUpperCase() + pieceType.slice(1).toLowerCase();
                 styles[`${pieceType[0]}${color[0]}${direction[0]}`] = GetImageStyling(`url(src/assets/snake/Snake${capColor}${capPieceType}.png)`, direction);
@@ -59,89 +66,129 @@ function GetImageStyling(path: string, direction: SnakeGameDirections = "UP"): C
     };
 }
 
-export function SetupGame(): SnakeGameData {
-    const GridHeightMiddle = Math.floor(GridWidth / 2);
-    const GridWidthMiddle = Math.floor(GridHeight / 2);
-
-    // Setup grid
-    const grid = SetupEmptyGrid();
+export function SetupGame(options: Partial<SnakeGameOptions>): SnakeGameData {
+    const completeOptions: SnakeGameOptions = {...standardOptions, ...options};
+    const { gridHeight, gridWidth, fruitAmount } = completeOptions;
+    const grid = SetupEmptyGrid(gridWidth, gridHeight);
 
     // Setup initial data
     const gameData: SnakeGameData = {
-        score: 0,
+        options: completeOptions,
         gameOver: false,
-        queuedMoves: [],
         fruits: [],
-        snakeBody: [
-            { y: GridHeightMiddle + 2, x: GridWidthMiddle, color: "GREEN", direction: "UP" },
-            { y: GridHeightMiddle + 1, x: GridWidthMiddle, color: "GREEN", direction: "UP" },
-            { y: GridHeightMiddle, x: GridWidthMiddle, color: "GREEN", direction: "UP" },
-        ],
-        direction: "UP",
-        grid
+        grid,
+        players: [],
     }
+    GenerateStartingPlayers(gameData);
 
     // Setup fruit
-    for (let i = 0; i < FruitAmount; i++) {
+    for (let i = 0; i < fruitAmount; i++) {
         SetupNewFruitLocation(gameData);
     }
-    InsertSnakeBodyPiecesIntoGrid(grid, gameData.snakeBody);
+
+    // Generate snakes
+    for (const player of gameData.players) {
+        InsertSnakeBodyPiecesIntoGrid(grid, player.snakeBody);
+    }
 
     return gameData;
+}
+
+function GenerateStartingPlayers(gameData: SnakeGameData) {
+    const { gridWidth, gridHeight, playerAmount } = gameData.options;
+
+    for (let i = 0; i < playerAmount; i++) {
+        const SnakeHeadX = Math.floor(gridWidth / (playerAmount+1) * (i+1));
+        const SnakeHeadY = Math.floor(gridHeight / 2);
+        const color: SnakeColors = AllSnakeColors[i];
+        gameData.players.push(GeneratePlayer(SnakeHeadX, SnakeHeadY, color));
+    }
+}
+
+function GeneratePlayer(snakePosX: number, snakePosY: number, color: SnakeColors): SnakePlayer {
+    return {
+        score: 0,
+        queuedMoves: [],
+        gameOver: false,
+        direction: "UP",
+        snakeBody: [
+            { y: snakePosY + 2, x: snakePosX, color, direction: "UP" },
+            { y: snakePosY + 1, x: snakePosX, color, direction: "UP" },
+            { y: snakePosY, x: snakePosX, color, direction: "UP" },
+        ],
+    }
 }
 
 export function MoveForward(gameData: SnakeGameData): SnakeGameData {
-    let newDirection = gameData.queuedMoves.shift();
-    if (newDirection) gameData.direction = newDirection;
+    for (let i = 0; i < gameData.players.length; i++) {
+        const player = gameData.players[i];
 
-    if (CheckForBorder(gameData)) {
-        gameData.gameOver = true;
-        return gameData;
+        // Execute a move if it is queued
+        let newDirection = player.queuedMoves.shift();
+        if (newDirection) player.direction = newDirection;
+
+        if (CheckForBorder(gameData, i)) {
+            player.gameOver = true;
+            if (CheckForGameOver(gameData)) {
+                gameData.gameOver = true;
+                return gameData;
+            }
+        }
+
+        if (CheckForSnake(gameData, i)) {
+            player.gameOver = true;
+            if (CheckForGameOver(gameData)) {
+                gameData.gameOver = true;
+                return gameData;
+            }
+        }
+
+        const hitFruit = CheckForFruit(gameData, i);
+        if (hitFruit !== undefined) {
+            player.score++;
+            gameData.fruits = gameData.fruits.filter(v => v !== hitFruit);
+            SetupNewFruitLocation(gameData);
+            player.snakeBody.unshift(player.snakeBody[0]);
+        }
+
+        player.snakeBody.shift();
+        const snakeHead = GetNewHeadPosition(gameData, i)
+        player.snakeBody.push(snakeHead);
     }
-
-    if (CheckForSnake(gameData)) {
-        gameData.gameOver = true;
-        return gameData;
-    }
-
-    const hitFruit = CheckForFruit(gameData);
-    if (hitFruit !== undefined) {
-        gameData.score++;
-        gameData.fruits = gameData.fruits.filter(v => v !== hitFruit);
-        SetupNewFruitLocation(gameData);
-        gameData.snakeBody.unshift(gameData.snakeBody[0]);
-    }
-
-    gameData.snakeBody.shift();
-    const snakeHead = GetNewHeadPosition(gameData)
-    gameData.snakeBody.push(snakeHead);
 
     ResetGrid(gameData.grid);
-    InsertValuesIntoGrid(gameData.grid, gameData.fruits, "F");
-    InsertSnakeBodyPiecesIntoGrid(gameData.grid, gameData.snakeBody);
+    for (const fruit of gameData.fruits) {
+        InsertValueIntoGrid(gameData.grid, fruit, "F");
+    }
+    for (const player of gameData.players) {
+        InsertSnakeBodyPiecesIntoGrid(gameData.grid, player.snakeBody);
+    }
 
     return gameData;
 }
 
-export function ChangeDirection(gameData: SnakeGameData, direction: SnakeGameDirections) {
-    const { queuedMoves } = gameData;
+export function ChangeDirection(gameData: SnakeGameData, newDirection: SnakeGameDirections, playerIndex: number = 0) {
+    const player = gameData.players[playerIndex];
+    const { queuedMoves, direction } = player;
+
     let actualDirection = queuedMoves[queuedMoves.length - 1];
-    if (!actualDirection) actualDirection = gameData.direction;
+    if (!actualDirection) actualDirection = direction;
 
     if (actualDirection === "UP" || actualDirection === "DOWN") {
-        if (direction === "LEFT" || direction === "RIGHT") {
-            queuedMoves.push(direction);
+        if (newDirection === "LEFT" || newDirection === "RIGHT") {
+            queuedMoves.push(newDirection);
         }
     } else {
-        if (direction === "UP" || direction === "DOWN") {
-            queuedMoves.push(direction);
+        if (newDirection === "UP" || newDirection === "DOWN") {
+            queuedMoves.push(newDirection);
         }
     }
 }
 
-function CheckForBorder(gameData: SnakeGameData): boolean {
-    const { direction, snakeBody } = gameData;
-    const snakeHead = gameData.snakeBody[snakeBody.length-1];
+function CheckForBorder(gameData: SnakeGameData, playerIndex: number): boolean {
+    const player = gameData.players[playerIndex];
+    const { direction, snakeBody } = player;
+    const snakeHead = snakeBody[snakeBody.length-1];
 
     switch (direction) {
         case "UP":
@@ -149,36 +196,43 @@ function CheckForBorder(gameData: SnakeGameData): boolean {
         case "LEFT":
             return snakeHead.x === 0;
         case "DOWN":
-            return snakeHead.y === GridHeight - 1;
+            return snakeHead.y === gameData.options.gridHeight - 1;
         case "RIGHT":
-            return snakeHead.x === GridWidth - 1;
+            return snakeHead.x === gameData.options.gridWidth - 1;
     }
 }
 
-function CheckForSnake(gameData: SnakeGameData): boolean {
-    const { direction, grid, snakeBody} = gameData;
-    const snakeHead = gameData.snakeBody[snakeBody.length-1];
+function CheckForSnake(gameData: SnakeGameData, playerIndex: number): boolean {
+    const player = gameData.players[playerIndex];
+    const { direction, snakeBody} = player;
+    const { grid } = gameData;
+    const snakeHead = snakeBody[snakeBody.length-1];
     let nextPosition: string;
 
     switch (direction) {
         case "UP":
             nextPosition = grid[snakeHead.y - 1][snakeHead.x];
-            return nextPosition !== "." && nextPosition !== "F";
+            break;
         case "LEFT":
             nextPosition = grid[snakeHead.y][snakeHead.x - 1];
-            return nextPosition !== "." && nextPosition !== "F";
+            break;
         case "DOWN":
             nextPosition = grid[snakeHead.y + 1][snakeHead.x];
-            return nextPosition !== "." && nextPosition !== "F";
+            break;
         case "RIGHT":
             nextPosition = grid[snakeHead.y][snakeHead.x + 1];
-            return nextPosition !== "." && nextPosition !== "F";
+            break;
     }
+
+    // FIXME: When a snake eats a fruit the tail does not retract. A different snake can hit this tail and would not die.
+    return nextPosition !== "." && nextPosition !== "F" && nextPosition[0] !== "T";
 }
 
-function CheckForFruit(gameData: SnakeGameData): GridCellLocation | undefined {
-    const { direction, fruits, snakeBody } = gameData;
-    const snakeHead = gameData.snakeBody[snakeBody.length-1];
+function CheckForFruit(gameData: SnakeGameData, playerIndex: number): GridCellLocation | undefined {
+    const player = gameData.players[playerIndex];
+    const { direction, snakeBody } = player;
+    const { fruits } = gameData;
+    const snakeHead = snakeBody[snakeBody.length-1];
 
     switch (direction) {
         case "UP":
@@ -192,19 +246,32 @@ function CheckForFruit(gameData: SnakeGameData): GridCellLocation | undefined {
     }
 }
 
-function GetNewHeadPosition(gameData: SnakeGameData): SnakePieceCell {
-    const { direction, snakeBody } = gameData;
-    const snakeHead = gameData.snakeBody[snakeBody.length-1];
+function CheckForGameOver(gameData: SnakeGameData): boolean {
+    let amountStillPlaying = gameData.players.map(p => p.gameOver).filter(v => !v).length;
+
+    // Single player mode
+    if (gameData.players.length === 1) {
+        return amountStillPlaying === 0;
+    }
+    // Versus mode
+    return amountStillPlaying === 1;
+}
+
+function GetNewHeadPosition(gameData: SnakeGameData, playerIndex: number): SnakePieceCell {
+    const player = gameData.players[playerIndex];
+    const { direction, snakeBody } = player;
+    const snakeHead = snakeBody[snakeBody.length-1];
+    const { x, y, color } = snakeHead;
 
     switch (direction) {
         case "UP":
-            return { x: snakeHead.x, y: snakeHead.y - 1, color: "GREEN", direction };
+            return { x, y: y - 1, color, direction };
         case "LEFT":
-            return { x: snakeHead.x - 1, y: snakeHead.y, color: "GREEN", direction };
+            return { y, x: x - 1, color, direction };
         case "DOWN":
-            return { x: snakeHead.x, y: snakeHead.y + 1, color: "GREEN", direction };
+            return { x, y: y + 1, color, direction };
         case "RIGHT":
-            return { x: snakeHead.x + 1, y: snakeHead.y, color: "GREEN", direction };
+            return { y, x: x + 1, color, direction };
     }
 }
 
@@ -224,11 +291,11 @@ function FindNewFruitLocation(gameData: SnakeGameData): GridCellLocation | undef
     return viablePositions[Math.floor(Math.random()*viablePositions.length)];
 }
 
-function SetupEmptyGrid(): GridData {
+function SetupEmptyGrid(width: number, height: number): GridData {
     const grid: GridData = [];
-    for (let i = 0; i < GridWidth; i++) {
+    for (let i = 0; i < width; i++) {
         let row: string[] = [];
-        for (let j = 0; j < GridHeight; j++) {
+        for (let j = 0; j < height; j++) {
             row.push(".");
         }
         grid.push(row);
@@ -237,8 +304,8 @@ function SetupEmptyGrid(): GridData {
 }
 
 function ResetGrid(gameData: GridData) {
-    for (let i = 0; i < GridHeight; i++) {
-        for (let j = 0; j < GridWidth; j++) {
+    for (let i = 0; i < gameData.length; i++) {
+        for (let j = 0; j < gameData[0].length; j++) {
             gameData[i][j] = ".";
         }
     }
@@ -281,12 +348,6 @@ function InsertSnakeBodyPiecesIntoGrid(gameGrid: GridData, snakeBody: SnakePiece
         else if (curveDirection === "DOWN" && previousPiece.direction === "LEFT") curveDirection = "RIGHT";
         else if (curveDirection === "LEFT" && previousPiece.direction === "UP") curveDirection = "DOWN";
         InsertValueIntoGrid(gameGrid, bodyPiece, GenerateTypeIndex({...bodyPiece, direction: curveDirection}, "CURVE"));
-    }
-}
-
-function InsertValuesIntoGrid(gameData: GridData, locations: GridCellLocation[], value: string) {
-    for (const location of locations) {
-        InsertValueIntoGrid(gameData, location, value);
     }
 }
 
