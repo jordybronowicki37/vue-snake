@@ -52,9 +52,10 @@ export function MoveForward(gameData: SnakeGameData): SnakeGameData {
         return gameData;
     }
 
-    if (CheckForFruit(gameData)) {
+    const hitFruit = CheckForFruit(gameData);
+    if (hitFruit !== undefined) {
         gameData.score++;
-        gameData.fruits.pop();
+        gameData.fruits = gameData.fruits.filter(v => v !== hitFruit);
         SetupNewFruitLocation(gameData);
         gameData.snakeBody.unshift(gameData.snakeBody[0]);
     }
@@ -75,8 +76,6 @@ export function ChangeDirection(gameData: SnakeGameData, direction: SnakeGameDir
     const { queuedMoves } = gameData;
     let actualDirection = queuedMoves[queuedMoves.length - 1];
     if (!actualDirection) actualDirection = gameData.direction;
-
-    console.log(actualDirection);
 
     if (actualDirection === "UP" || actualDirection === "DOWN") {
         if (direction === "LEFT" || direction === "RIGHT") {
@@ -119,18 +118,18 @@ function CheckForSnake(gameData: SnakeGameData): boolean {
     }
 }
 
-function CheckForFruit(gameData: SnakeGameData): boolean {
+function CheckForFruit(gameData: SnakeGameData): GridCellLocation | undefined {
     const { direction, fruits, snakeHead } = gameData;
 
     switch (direction) {
         case "UP":
-            return fruits.some((fruit) => snakeHead.x === fruit.x && snakeHead.y === fruit.y + 1);
+            return fruits.find((fruit) => snakeHead.x === fruit.x && snakeHead.y === fruit.y + 1);
         case "LEFT":
-            return fruits.some((fruit) => snakeHead.x === fruit.x + 1 && snakeHead.y === fruit.y);
+            return fruits.find((fruit) => snakeHead.x === fruit.x + 1 && snakeHead.y === fruit.y);
         case "DOWN":
-            return fruits.some((fruit) => snakeHead.x === fruit.x && snakeHead.y === fruit.y - 1);
+            return fruits.find((fruit) => snakeHead.x === fruit.x && snakeHead.y === fruit.y - 1);
         case "RIGHT":
-            return fruits.some((fruit) => snakeHead.x === fruit.x - 1 && snakeHead.y === fruit.y);
+            return fruits.find((fruit) => snakeHead.x === fruit.x - 1 && snakeHead.y === fruit.y);
     }
 }
 
