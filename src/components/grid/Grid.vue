@@ -23,6 +23,5 @@ defineProps<{ data: GridData, cellStyles: CellStyles, height: number, width: num
   max-width: calc(100% / v-bind(width));
   height: 1.5rem;
   aspect-ratio : 1 / 1;
-  background-color: #444;
 }
 </style>

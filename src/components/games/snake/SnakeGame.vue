@@ -2,8 +2,10 @@
 import Grid from "../../grid/Grid.vue";
 import {ref} from "vue";
 import {SnakeGameData} from "./SnakeGameTypes.ts";
-import {ChangeDirection, MoveForward, SetupGame, SnakeGameCellStyles} from "./SnakeGameLogic.ts";
+import {ChangeDirection, MoveForward} from "./SnakeGameLogic.ts";
 import SnakeGameOver from "./SnakeGameOver.vue";
+import {SnakeGameCellStyles} from "./SnakeGameStyling.ts";
+import {SetupGame} from "./SnakeGameSetupsPresets.ts";
 
 const snakeGameData = ref<SnakeGameData>(SetupGame({}));
 const timerId = ref<number>(0);
@@ -102,7 +104,7 @@ function HandleButtonClick(e: KeyboardEvent) {
       <div class="score-value">Current score: {{score}}</div>
       <Grid
           v-bind:data="snakeGameData.grid"
-          v-bind:cellStyles="SnakeGameCellStyles"
+          v-bind:cellStyles="SnakeGameCellStyles()"
           v-bind:height="snakeGameData.options.gridHeight"
           v-bind:width="snakeGameData.options.gridWidth"/>
     </div>
