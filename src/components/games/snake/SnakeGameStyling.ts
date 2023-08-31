@@ -1,7 +1,7 @@
 import CSS from "csstype";
-import {CellStyles} from "../../grid/GridTypes.ts";
-import {AllSnakeColors, AllSnakeDirections, AllSnakePieceTypes, SnakeGameDirections} from "./SnakeGameTypes.ts";
-import {CSSProperties} from "vue/dist/vue";
+import {CellStyles} from "../../grid/GridTypes";
+import {AllSnakeColors, AllSnakeDirections, AllSnakePieceTypes, SnakeGameDirections} from "./SnakeGameTypes";
+import {CSSProperties} from "@vue/runtime-dom";
 
 export function SnakeGameCellStyles(
     backgroundColor: CSS.Property.BackgroundColor = "#444",

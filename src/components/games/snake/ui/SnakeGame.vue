@@ -5,9 +5,9 @@ import {SnakeGameData} from "../SnakeGameTypes";
 import {ChangeDirection, MoveForward} from "../SnakeGameLogic";
 import SnakeGameOver from "./SnakeGameOver.vue";
 import {SnakeGameCellStyles} from "../SnakeGameStyling";
-import {SetupGame} from "../SnakeGameSetupsPresets";
+import {SetupSnakeLevel1} from "../levels/SnakeLevel1";
 
-const snakeGameData = ref<SnakeGameData>(SetupGame({}));
+const snakeGameData = ref<SnakeGameData>(SetupSnakeLevel1());
 const timerId = ref<number>(0);
 const score = ref<number>(0);
 const highScore = ref<number>(Number(localStorage.getItem("snakeHighScore")));
@@ -55,7 +55,7 @@ function GenerateNewMessage() {
 
 function StartNewGame() {
   clearInterval(timerId.value);
-  snakeGameData.value = SetupGame({});
+  snakeGameData.value = SetupSnakeLevel1();
   score.value = 0;
   SetupTimer();
 }

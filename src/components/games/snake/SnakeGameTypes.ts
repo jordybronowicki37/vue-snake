@@ -1,4 +1,4 @@
-import {GridCellLocation, GridData} from "../../grid/GridTypes.ts";
+import {GridCellLocation, GridData} from "../../grid/GridTypes";
 
 export type SnakeGameDirections = "UP" | "DOWN" | "LEFT" | "RIGHT";
 export const AllSnakeDirections: SnakeGameDirections[] = ["UP", "DOWN", "LEFT", "RIGHT"];
@@ -31,6 +31,9 @@ export type SnakeGameData = {
 export type SnakeGameOptions = {
     gridHeight: number;
     gridWidth: number;
-    playerAmount: number;
     fruitAmount: number;
+    players: SnakePlayer[];
+
+    snakeSize: number;
+    snakeGrowth: boolean;
 }

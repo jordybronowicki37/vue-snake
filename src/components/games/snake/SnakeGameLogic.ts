@@ -1,10 +1,27 @@
-import {GridCellData, GridCellLocation, GridData} from "../../grid/GridTypes.ts";
+import {GridCellData, GridCellLocation, GridData} from "../../grid/GridTypes";
 import {
     SnakePieceType,
     SnakeGameData,
     SnakeGameDirections,
-    SnakePieceCell, SnakeColors, SnakePlayer
-} from "./SnakeGameTypes.ts";
+    SnakePieceCell, SnakeColors, SnakePlayer, SnakeGameOptions
+} from "./SnakeGameTypes";
+
+export const StandardSnakeOptions: SnakeGameOptions = {
+    gridHeight: 25,
+    gridWidth: 25,
+    fruitAmount: 1,
+    players: [],
+    snakeGrowth: true,
+    snakeSize: 3,
+}
+
+export const StandardPlayerOptions: SnakePlayer = {
+    score: 0,
+    gameOver: false,
+    direction: "UP",
+    snakeBody: [],
+    queuedMoves: [],
+}
 
 export function MoveForward(gameData: SnakeGameData): SnakeGameData {
     for (let i = 0; i < gameData.players.length; i++) {
@@ -230,18 +247,44 @@ export function InsertValueIntoGrid(gameData: GridData, location: GridCellLocati
     gameData[location.y][location.x] = value;
 }
 
-export function GeneratePlayer(snakePosX: number, snakePosY: number, color: SnakeColors): SnakePlayer {
-    return {
-        score: 0,
-        queuedMoves: [],
-        gameOver: false,
-        direction: "UP",
-        snakeBody: [
-            { y: snakePosY + 2, x: snakePosX, color, direction: "UP" },
-            { y: snakePosY + 1, x: snakePosX, color, direction: "UP" },
-            { y: snakePosY, x: snakePosX, color, direction: "UP" },
-        ],
+export function GeneratePlayer(snakeHeadPosX: number, snakeHeadPosY: number, snakeSize: number, color: SnakeColors): SnakePlayer {
+    const snakeBody: SnakePieceCell[] = [];
+    for (let i = snakeSize-1; i >= 0; i--) {
+        snakeBody.push({ y: snakeHeadPosY + i, x: snakeHeadPosX, color, direction: "UP" });
     }
+
+    return {
+        ...StandardPlayerOptions,
+        direction: "UP",
+        snakeBody,
+    }
+}
+
+export function SetupGame(options: Partial<SnakeGameOptions>): SnakeGameData {
+    const completedOptions: SnakeGameOptions = {...StandardSnakeOptions, ... options}
+    const { gridHeight, gridWidth, fruitAmount, players } = completedOptions;
+    const grid = SetupEmptyGrid(gridHeight, gridWidth);
+
+    // Setup initial data
+    const gameData: SnakeGameData = {
+        options: completedOptions,
+        gameOver: false,
+        fruits: [],
+        grid,
+        players,
+    }
+
+    // Setup fruit
+    for (let i = 0; i < fruitAmount; i++) {
+        SetupNewFruitLocation(gameData);
+    }
+
+    // Generate snakes
+    for (const player of gameData.players) {
+        InsertSnakeBodyPiecesIntoGrid(grid, player.snakeBody);
+    }
+
+    return gameData;
 }
 
 export function SetupEmptyGrid(height: number, width: number): GridData {
