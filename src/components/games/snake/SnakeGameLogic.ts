@@ -3,7 +3,7 @@ import {
     SnakePieceType,
     SnakeGameData,
     SnakeGameDirections,
-    SnakePieceCell
+    SnakePieceCell, SnakeColors, SnakePlayer
 } from "./SnakeGameTypes.ts";
 
 export function MoveForward(gameData: SnakeGameData): SnakeGameData {
@@ -228,4 +228,30 @@ export function InsertSnakeBodyPiecesIntoGrid(gameGrid: GridData, snakeBody: Sna
 
 export function InsertValueIntoGrid(gameData: GridData, location: GridCellLocation, value: string) {
     gameData[location.y][location.x] = value;
+}
+
+export function GeneratePlayer(snakePosX: number, snakePosY: number, color: SnakeColors): SnakePlayer {
+    return {
+        score: 0,
+        queuedMoves: [],
+        gameOver: false,
+        direction: "UP",
+        snakeBody: [
+            { y: snakePosY + 2, x: snakePosX, color, direction: "UP" },
+            { y: snakePosY + 1, x: snakePosX, color, direction: "UP" },
+            { y: snakePosY, x: snakePosX, color, direction: "UP" },
+        ],
+    }
+}
+
+export function SetupEmptyGrid(height: number, width: number): GridData {
+    const grid: GridData = [];
+    for (let i = 0; i < height; i++) {
+        let row: string[] = [];
+        for (let j = 0; j < width; j++) {
+            row.push(".");
+        }
+        grid.push(row);
+    }
+    return grid;
 }
