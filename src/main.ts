@@ -2,8 +2,8 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import {createRouter, createWebHashHistory, RouteRecordRaw} from "vue-router";
-import SnakeHome from "./components/games/snake/SnakeHome.vue";
-import SnakeGame from "./components/games/snake/SnakeGame.vue";
+import SnakeHome from "./components/games/snake/ui/SnakeHome.vue";
+import SnakeGame from "./components/games/snake/ui/SnakeGame.vue";
 
 const routes: RouteRecordRaw[] = [
     { path: "/", component: SnakeHome },

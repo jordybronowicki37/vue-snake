@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Grid from "../../grid/Grid.vue";
+import Grid from "../../../grid/Grid.vue";
 import {ref} from "vue";
-import {SnakeGameCellStyles} from "./SnakeGameStyling";
-import {SetupEmptyGrid} from "./SnakeGameSetupsPresets.ts";
+import {SnakeGameCellStyles} from "../SnakeGameStyling";
+import {SetupEmptyGrid} from "../SnakeGameLogic";
 
 const GRID_HEIGHT = 3;
 const GRID_WIDTH = 40;

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Grid from "../../grid/Grid.vue";
+import Grid from "../../../grid/Grid.vue";
 import {ref} from "vue";
-import {SnakeGameData} from "./SnakeGameTypes.ts";
-import {ChangeDirection, MoveForward} from "./SnakeGameLogic.ts";
+import {SnakeGameData} from "../SnakeGameTypes";
+import {ChangeDirection, MoveForward} from "../SnakeGameLogic";
 import SnakeGameOver from "./SnakeGameOver.vue";
-import {SnakeGameCellStyles} from "./SnakeGameStyling.ts";
-import {SetupGame} from "./SnakeGameSetupsPresets.ts";
+import {SnakeGameCellStyles} from "../SnakeGameStyling";
+import {SetupGame} from "../SnakeGameSetupsPresets";
 
 const snakeGameData = ref<SnakeGameData>(SetupGame({}));
 const timerId = ref<number>(0);
