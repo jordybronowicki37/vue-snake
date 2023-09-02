@@ -1,5 +1,6 @@
-import {GeneratePlayer, SetupGame, StandardSnakeOptions} from "../engine/SnakeLogic";
+import {StandardSnakeOptions} from "../engine/SnakeLogic";
 import {SnakeGameData} from "../engine/SnakeTypes";
+import {GeneratePlayer, SetupGame} from "../engine/SnakeHelpers.ts";
 
 export function SetupSnakeLevel1(): SnakeGameData {
     return SetupGame({

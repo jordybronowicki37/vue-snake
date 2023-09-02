@@ -2,7 +2,7 @@
 import Grid from "../../../grid/Grid.vue";
 import {ref} from "vue";
 import {SnakeGameCellStyles} from "../engine/SnakeStyling";
-import {SetupEmptyGrid} from "../engine/SnakeLogic";
+import {SetupEmptyGrid} from "../engine/SnakeHelpers.ts";
 
 const GRID_HEIGHT = 3;
 const GRID_WIDTH = 40;
