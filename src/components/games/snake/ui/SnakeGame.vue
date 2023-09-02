@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import Grid from "../../../grid/Grid.vue";
 import {ref} from "vue";
-import {SnakeGameData} from "../SnakeGameTypes";
-import {ChangeDirection, MoveForward} from "../SnakeGameLogic";
+import {SnakeGameData} from "../engine/SnakeTypes";
+import {ChangeDirection, MoveForward} from "../engine/SnakeLogic";
 import SnakeGameOver from "./SnakeGameOver.vue";
-import {SnakeGameCellStyles} from "../SnakeGameStyling";
+import {SnakeGameCellStyles} from "../engine/SnakeStyling";
 import {SetupSnakeLevel1} from "../levels/SnakeLevel1";
 
 const snakeGameData = ref<SnakeGameData>(SetupSnakeLevel1());
@@ -60,7 +60,10 @@ function StartNewGame() {
   SetupTimer();
 }
 
+document.addEventListener("keydown", HandleButtonClick);
+
 function HandleButtonClick(e: KeyboardEvent) {
+  console.log("Button down")
   switch (e.key) {
     case "Enter":
       StartNewGame();
@@ -97,7 +100,7 @@ function HandleButtonClick(e: KeyboardEvent) {
 </script>
 
 <template>
-  <div tabindex="0" autofocus class="snake-game-container" @keydown="HandleButtonClick($event)">
+  <div class="snake-game-container">
     <SnakeGameOver v-bind:show="snakeGameData.gameOver" v-bind:message="gameOverMessage" v-bind:score="score"/>
     <div class="grid-wrapper">
       <div class="score-value">High score: {{highScore}}</div>

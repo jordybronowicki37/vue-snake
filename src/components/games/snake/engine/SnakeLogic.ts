@@ -1,10 +1,10 @@
-import {GridCellData, GridCellLocation, GridData} from "../../grid/GridTypes";
+import {GridCellData, GridCellLocation, GridData} from "../../../grid/GridTypes";
 import {
     SnakePieceType,
     SnakeGameData,
     SnakeGameDirections,
     SnakePieceCell, SnakeColors, SnakePlayer, SnakeGameOptions
-} from "./SnakeGameTypes";
+} from "./SnakeTypes";
 
 export const StandardSnakeOptions: SnakeGameOptions = {
     gridHeight: 25,

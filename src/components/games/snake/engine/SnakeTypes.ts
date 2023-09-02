@@ -1,4 +1,4 @@
-import {GridCellLocation, GridData} from "../../grid/GridTypes";
+import {GridCellLocation, GridData} from "../../../grid/GridTypes";
 
 export type SnakeGameDirections = "UP" | "DOWN" | "LEFT" | "RIGHT";
 export const AllSnakeDirections: SnakeGameDirections[] = ["UP", "DOWN", "LEFT", "RIGHT"];
