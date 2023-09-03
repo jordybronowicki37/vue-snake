@@ -18,13 +18,13 @@ const router = useRouter();
       <h2>Battle</h2>
       <p>Face off against your friends in a fast-paced, last-snake-standing battle. Use
         cunning moves to emerge as the victor in this intense multiplayer showdown.</p>
-      <button>Play ⮞</button>
+      <button disabled>WIP</button>
     </div>
     <div class="mode-card ">
       <h2>Versus</h2>
       <p>Compete in separate boards to collect fruits and outlast your opponent in this head-to-head
         challenge. Coordinate your strategy and prove your snake supremacy in this multiplayer rivalry.</p>
-      <button>Play ⮞</button>
+      <button disabled>WIP</button>
     </div>
   </div>
 </div>
@@ -53,6 +53,10 @@ const router = useRouter();
   background-color: #333;
   display: flex;
   flex-direction: column;
+  transition: 0.5s;
+}
+.mode-card:hover {
+  transform: scale(1.05);
 }
 .mode-card>h2 {
   font-size: 30px;
@@ -71,12 +75,13 @@ const router = useRouter();
   padding: 0.5rem 1rem;
   border-radius: 2rem;
   border: none;
-  cursor: pointer;
   background-color: #555;
   align-self: end;
   margin: 0.5rem;
+  cursor: not-allowed;
 
-  &:hover {
+  &:hover:not(:disabled) {
+    cursor: pointer;
     background-color: #666;
   }
 }
