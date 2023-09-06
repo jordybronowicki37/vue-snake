@@ -42,9 +42,9 @@ export function InsertValueIntoGrid(gameData: GridData, location: GridCellLocati
     gameData[location.y][location.x] = value;
 }
 
-export function SetupGame(options: Partial<SnakeGameOptions>): SnakeGameData {
-    const completedOptions: SnakeGameOptions = {...StandardSnakeOptions, ... options}
-    const { gridHeight, gridWidth, fruitAmount, players } = completedOptions;
+export function SetupGame(options: Partial<SnakeGameOptions>, players: SnakePlayer[]): SnakeGameData {
+    const completedOptions: SnakeGameOptions = {...StandardSnakeOptions, ...options}
+    const { gridHeight, gridWidth, fruitAmount } = completedOptions;
     const grid = SetupEmptyGrid(gridHeight, gridWidth);
 
     // Setup initial data

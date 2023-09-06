@@ -1,15 +1,15 @@
 import {SnakeGameData} from "./SnakeTypes";
 import {ChangeDirection, MoveForward} from "./SnakeLogic";
-import {SetupSnakeLevel1} from "../levels/SnakeLevel1";
+import {GenerateLevel} from "../levels/SnakeLevelServer.ts";
 
 export class SnakeEngine {
     private timerId: number | undefined;
     private score: number = 0;
     public gamePaused: boolean = false;
-    public snakeGameData: SnakeGameData;
+    public gameData: SnakeGameData;
 
-    constructor(snakeGameData: SnakeGameData) {
-        this.snakeGameData = snakeGameData;
+    constructor(level: string) {
+        this.gameData = GenerateLevel(level);
     }
 
     public StartEngine() {
@@ -19,14 +19,14 @@ export class SnakeEngine {
 
     public PauseEngine() {
         if (this.gamePaused) return;
-        if (this.snakeGameData.gameOver) return;
+        if (this.gameData.gameOver) return;
         this.gamePaused = true;
         this.ClearTimer();
     }
 
     public ContinueEngine() {
         if (!this.gamePaused) return;
-        if (this.snakeGameData.gameOver) return;
+        if (this.gameData.gameOver) return;
         this.gamePaused = false;
         this.SetupTimer();
     }
@@ -46,11 +46,11 @@ export class SnakeEngine {
     }
 
     private NextTimeStep() {
-        MoveForward(this.snakeGameData)
-        if (this.snakeGameData.gameOver) {
+        MoveForward(this.gameData)
+        if (this.gameData.gameOver) {
             this.ClearTimer();
         }
-        const totalScore = this.snakeGameData.players.map(v => v.score).reduce((a, b) => a + b, 0);
+        const totalScore = this.gameData.players.map(v => v.score).reduce((a, b) => a + b, 0);
         if (this.score !== totalScore) {
             this.score = totalScore;
             this.ClearTimer()
@@ -60,7 +60,7 @@ export class SnakeEngine {
 
     private StartNewGame() {
         clearInterval(this.timerId);
-        this.snakeGameData = SetupSnakeLevel1();
+        this.gameData = GenerateLevel(this.gameData.options.level);
         this.score = 0;
         this.SetupTimer();
     }
@@ -75,31 +75,31 @@ export class SnakeEngine {
                 this.StartNewGame();
                 break;
             case "w":
-                ChangeDirection(this.snakeGameData, 'UP', 0)
+                ChangeDirection(this.gameData, 'UP', 0)
                 break;
             case "a":
-                ChangeDirection(this.snakeGameData, 'LEFT', 0)
+                ChangeDirection(this.gameData, 'LEFT', 0)
                 break;
             case "s":
-                ChangeDirection(this.snakeGameData, 'DOWN', 0)
+                ChangeDirection(this.gameData, 'DOWN', 0)
                 break;
             case "d":
-                ChangeDirection(this.snakeGameData, 'RIGHT', 0)
+                ChangeDirection(this.gameData, 'RIGHT', 0)
                 break;
         }
-        if (this.snakeGameData.players.length === 1) return;
+        if (this.gameData.players.length === 1) return;
         switch (e.key) {
             case "ArrowUp":
-                ChangeDirection(this.snakeGameData, 'UP', 1)
+                ChangeDirection(this.gameData, 'UP', 1)
                 break;
             case "ArrowLeft":
-                ChangeDirection(this.snakeGameData, 'LEFT', 1)
+                ChangeDirection(this.gameData, 'LEFT', 1)
                 break;
             case "ArrowDown":
-                ChangeDirection(this.snakeGameData, 'DOWN', 1)
+                ChangeDirection(this.gameData, 'DOWN', 1)
                 break;
             case "ArrowRight":
-                ChangeDirection(this.snakeGameData, 'RIGHT', 1)
+                ChangeDirection(this.gameData, 'RIGHT', 1)
                 break;
         }
     }

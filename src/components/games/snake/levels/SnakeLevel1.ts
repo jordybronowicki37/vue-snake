@@ -4,6 +4,8 @@ import {GeneratePlayer, SetupGame} from "../engine/SnakeHelpers.ts";
 
 export function SetupSnakeLevel1(): SnakeGameData {
     return SetupGame({
-        players: [GeneratePlayer(12, 12, StandardSnakeOptions.snakeSize, "BLUE")]
-    });
+            level: "1-1",
+        },
+        [GeneratePlayer(12, 12, StandardSnakeOptions.snakeSize, "BLUE")]
+    );
 }

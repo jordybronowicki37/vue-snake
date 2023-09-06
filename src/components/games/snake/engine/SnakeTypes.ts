@@ -29,10 +29,10 @@ export type SnakeGameData = {
 }
 
 export type SnakeGameOptions = {
+    level: string;
     gridHeight: number;
     gridWidth: number;
     fruitAmount: number;
-    players: SnakePlayer[];
 
     snakeSize: number;
     snakeGrowth: boolean;
