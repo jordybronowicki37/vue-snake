@@ -1,18 +1,40 @@
 <script setup lang="ts">
-  defineProps<{ show: boolean, score: number, message: string;}>()
+  import {SnakeGameData} from "../engine/SnakeTypes.ts";
+  import {ref} from "vue";
+
+  defineProps<{ gameData: SnakeGameData }>();
+
+  const message = ref<string>("");
+  
+  function GenerateNewMessage(): string {
+    const score = 0;
+    if (score < 5) {
+      return "You're a joke!";
+    } else if (score < 10) {
+      return "Good job! Loser";
+    } else if (score < 15) {
+      return "You're getting better!";
+    } else if (score < 20) {
+      return "Good job!";
+    } else if (score < 25) {
+      return "Great job!";
+    } else {
+      return "Well done Master!";
+    }
+  }
 </script>
 
 <template>
-  <div v-if="show" class="game-over-screen">
+  <div v-if="gameData.gameOver" class="game-over-screen">
     <div class="game-over-text">
       Game-over
     </div>
     <div class="game-over-score">
-      score: {{score}}
+      score: {{0}}
     </div>
     <div>
       <div class="game-over-message">
-        {{message}}
+        {{GenerateNewMessage()}}
       </div>
     </div>
     <div class="game-over-start-new">

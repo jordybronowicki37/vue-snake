@@ -3,22 +3,22 @@ import Grid from "../../../grid/Grid.vue";
 import {ref} from "vue";
 import SnakeGameOver from "./SnakeGameOver.vue";
 import {SnakeGameCellStyles} from "../engine/SnakeStyling";
-import {SetupSnakeLevel1} from "../levels/SnakeLevel1";
 import {SnakeEngine} from "../engine/SnakeEngine.ts";
+import {useRoute} from "vue-router";
+import SnakePause from "./SnakePause.vue";
+import {GenerateLevel} from "../levels/SnakeLevelServer.ts";
 
-const score = ref<number>(0);
-const highScore = ref<number>(Number(localStorage.getItem("snakeHighScore")));
-const gameOverMessage = ref<string>("");
-const snakeEngine = ref<SnakeEngine>(new SnakeEngine(SetupSnakeLevel1()));
+const route = useRoute();
+const level = GenerateLevel(<string>route.params.level);
+const snakeEngine = ref<SnakeEngine>(new SnakeEngine(level));
 snakeEngine.value.StartEngine();
 </script>
 
 <template>
   <div class="snake-game-container">
-    <SnakeGameOver v-bind:show="snakeEngine.snakeGameData.gameOver" v-bind:message="gameOverMessage" v-bind:score="score"/>
+    <SnakePause v-bind:show="snakeEngine.gamePaused"/>
+    <SnakeGameOver v-bind:game-data="snakeEngine.snakeGameData"/>
     <div class="grid-wrapper">
-      <div class="score-value">High score: {{highScore}}</div>
-      <div class="score-value">Current score: {{score}}</div>
       <Grid
           v-bind:data="snakeEngine.snakeGameData.grid"
           v-bind:cellStyles="SnakeGameCellStyles()"
@@ -35,11 +35,6 @@ snakeEngine.value.StartEngine();
   justify-content: center;
   position: relative;
   min-height: 100vh;
-}
-.score-value {
-  text-align: right;
-  font-size: 20px;
-  font-weight: bold;
 }
 .grid-wrapper {
   display: flex;
