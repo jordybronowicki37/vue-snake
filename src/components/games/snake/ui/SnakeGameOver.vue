@@ -6,8 +6,7 @@
 
   const message = ref<string>("");
   
-  function GenerateNewMessage(): string {
-    const score = 0;
+  function GenerateNewMessage(score: number): string {
     if (score < 5) {
       return "You're a joke!";
     } else if (score < 10) {
@@ -26,40 +25,58 @@
 
 <template>
   <div v-if="gameData.gameOver" class="game-over-screen">
-    <div class="game-over-text">
-      Game-over
-    </div>
-    <div class="game-over-score">
-      score: {{0}}
-    </div>
-    <div>
-      <div class="game-over-message">
-        {{GenerateNewMessage()}}
+    <div v-if="gameData.players.length === 1">
+      <h3 class="game-over-text">
+        Game-over
+      </h3>
+      <div class="game-over-score">
+        <div class="new-highscore-message">NEW HIGHSCORE!</div>
+        <div>score: {{gameData.players[0].score}}</div>
+      </div>
+      <div class="game-over-start-new">
+        Press ENTER to start a new game
+      </div>
+      <div class="tip-container">
+        <div class="tip-pre">Tip:</div>
+        <div class="tip-message">Try not to suck so much!</div>
       </div>
     </div>
-    <div class="game-over-start-new">
-      Press ENTER to start a new game
+
+    <div v-if="gameData.players.length > 1">
+      <h3 class="game-over-text">Player {{gameData.players.findIndex(p => !p.gameOver)+1}} has won!</h3>
+      <div class="game-over-start-new">
+        Press ENTER to start a new game
+      </div>
+      <div class="tip-container">
+        <div class="tip-pre">Tip:</div>
+        <div class="tip-message">Try to do better!</div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-
-
 .game-over-screen {
   user-select: none;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #2226;
+  color: #ffff;
+  backdrop-filter: blur(0.2rem);
+  animation: showGameOver 1s;
+}
+
+.game-over-screen>div {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  color: #ffff;
-  background-color: #2226;
-  backdrop-filter: blur(0.2rem);
-  animation: showGameOver 1s;
+  gap: 2rem;
 }
 
 @keyframes showGameOver {
@@ -78,43 +95,46 @@
 .game-over-text {
   font-family: "Agency FB", fantasy;
   font-size: 3rem;
+  margin: 0;
 }
 
 .game-over-score {
   font-family: monospace;
   font-size: 1rem;
+  text-align: center;
 }
 
-.game-over-message {
-  --message-length: v-bind(message.length);
-  font-family: monospace;
-  overflow: hidden;
-  border-right: .15em solid white;
-  white-space: nowrap;
-  margin: 1rem auto;
-  animation:
-      typing calc(.2s * var(--message-length)) steps(var(--message-length), end),
-      blink-caret .75s step-end infinite;
+.new-highscore-message {
+  height: 20px;
+  font-style: italic;
+  color: lightseagreen;
+  animation: newHighscore infinite 1.5s;
 }
 
-@keyframes typing {
-  0%, 20% { width: 0 }
-  100% { width: 100% }
-}
-
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: white; }
+@keyframes newHighscore {
+  from, to { font-size: 16px; }
+  50% { font-size: 18px; }
 }
 
 .game-over-start-new {
-  margin-top: 4rem;
   font-family: monospace;
-  animation: showStartNew 8s;
 }
 
-@keyframes showStartNew {
-  0%, 75% {color: #fff0}
-  100% {color: #ffff}
+.tip-container {
+  background-color: #2a2a2a;
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  max-width: 20rem;
+}
+.tip-pre {
+  font-weight: 700;
+  font-size: 20px;
+  color: lightseagreen;
+}
+.tip-message {
+  font-size: 16px;
+  align-self: center;
 }
 </style>
