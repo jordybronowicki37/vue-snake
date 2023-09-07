@@ -66,6 +66,7 @@ export class SnakeEngine {
     }
 
     private HandleUserInteractions(e: KeyboardEvent) {
+        const secondaryControlToPlayer = this.gameData.players.length-1;
         switch (e.key) {
             case "Backspace":
                 if (this.gamePaused) this.ContinueEngine();
@@ -75,31 +76,28 @@ export class SnakeEngine {
                 this.StartNewGame();
                 break;
             case "w":
-                ChangeDirection(this.gameData, 'UP', 0)
+                ChangeDirection(this.gameData, 'UP')
                 break;
             case "a":
-                ChangeDirection(this.gameData, 'LEFT', 0)
+                ChangeDirection(this.gameData, 'LEFT')
                 break;
             case "s":
-                ChangeDirection(this.gameData, 'DOWN', 0)
+                ChangeDirection(this.gameData, 'DOWN')
                 break;
             case "d":
-                ChangeDirection(this.gameData, 'RIGHT', 0)
+                ChangeDirection(this.gameData, 'RIGHT')
                 break;
-        }
-        if (this.gameData.players.length === 1) return;
-        switch (e.key) {
             case "ArrowUp":
-                ChangeDirection(this.gameData, 'UP', 1)
+                ChangeDirection(this.gameData, 'UP', secondaryControlToPlayer)
                 break;
             case "ArrowLeft":
-                ChangeDirection(this.gameData, 'LEFT', 1)
+                ChangeDirection(this.gameData, 'LEFT', secondaryControlToPlayer)
                 break;
             case "ArrowDown":
-                ChangeDirection(this.gameData, 'DOWN', 1)
+                ChangeDirection(this.gameData, 'DOWN', secondaryControlToPlayer)
                 break;
             case "ArrowRight":
-                ChangeDirection(this.gameData, 'RIGHT', 1)
+                ChangeDirection(this.gameData, 'RIGHT', secondaryControlToPlayer)
                 break;
         }
     }

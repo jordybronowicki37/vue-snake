@@ -17,12 +17,10 @@ export const StandardSnakeOptions: SnakeGameOptions = {
     snakeSize: 3,
 }
 
-export const StandardPlayerOptions: SnakePlayer = {
+export const StandardPlayerOptions: Omit<Omit<SnakePlayer, "snakeBody">, "queuedMoves"> = {
     score: 0,
     gameOver: false,
     direction: "UP",
-    snakeBody: [],
-    queuedMoves: [],
 }
 
 export function MoveForward(gameData: SnakeGameData): SnakeGameData {

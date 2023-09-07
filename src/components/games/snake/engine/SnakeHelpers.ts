@@ -77,7 +77,7 @@ export function GeneratePlayer(snakeHeadPosX: number, snakeHeadPosY: number, sna
 
     return {
         ...StandardPlayerOptions,
-        direction: "UP",
+        queuedMoves: [],
         snakeBody,
     }
 }
