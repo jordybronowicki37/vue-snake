@@ -24,7 +24,7 @@ const router = useRouter();
       <h2>Versus</h2>
       <p>Compete in separate boards to collect fruits and outlast your opponent in this head-to-head
         challenge. Coordinate your strategy and prove your snake supremacy in this multiplayer rivalry.</p>
-      <button disabled>WIP</button>
+      <button v-on:click="router.push('/game/versus')">Play ⮞</button>
     </div>
   </div>
 </div>

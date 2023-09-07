@@ -9,10 +9,10 @@ import {
 import {GenerateTypeIndex, InsertValueIntoGrid, ResetGrid} from "./SnakeHelpers.ts";
 
 export const StandardSnakeOptions: SnakeGameOptions = {
+    level: "1-1",
     gridHeight: 25,
     gridWidth: 25,
     fruitAmount: 1,
-    players: [],
     snakeGrowth: true,
     snakeSize: 3,
 }
