@@ -6,7 +6,7 @@ import {
     SnakePlayer,
     SnakeGameOptions
 } from "./SnakeTypes";
-import {GenerateTypeIndex, InsertValueIntoGrid, ResetGrid} from "./SnakeHelpers.ts";
+import {GenerateTypeIndex, GetNextPosition, InsertValueIntoGrid, ResetGrid} from "./SnakeHelpers.ts";
 
 export const StandardSnakeOptions: SnakeGameOptions = {
     level: "1-1",
@@ -30,14 +30,6 @@ export function MoveForward(gameData: SnakeGameData): SnakeGameData {
         // Execute a move if it is queued
         let newDirection = player.queuedMoves.shift();
         if (newDirection) player.direction = newDirection;
-
-        if (CheckForBorder(gameData, i)) {
-            player.gameOver = true;
-            if (CheckForGameOver(gameData)) {
-                gameData.gameOver = true;
-                return gameData;
-            }
-        }
 
         if (CheckForSnake(gameData, i)) {
             player.gameOver = true;
@@ -89,65 +81,25 @@ export function ChangeDirection(gameData: SnakeGameData, newDirection: SnakeGame
     }
 }
 
-export function CheckForBorder(gameData: SnakeGameData, playerIndex: number): boolean {
-    const player = gameData.players[playerIndex];
-    const { direction, snakeBody } = player;
-    const snakeHead = snakeBody[snakeBody.length-1];
-
-    switch (direction) {
-        case "UP":
-            return snakeHead.y === 0;
-        case "LEFT":
-            return snakeHead.x === 0;
-        case "DOWN":
-            return snakeHead.y === gameData.options.gridHeight - 1;
-        case "RIGHT":
-            return snakeHead.x === gameData.options.gridWidth - 1;
-    }
-}
-
 export function CheckForSnake(gameData: SnakeGameData, playerIndex: number): boolean {
-    const player = gameData.players[playerIndex];
+    const { players, options: { gridWidth, gridHeight }, grid } = gameData;
+    const player = players[playerIndex];
     const { direction, snakeBody} = player;
-    const { grid } = gameData;
     const snakeHead = snakeBody[snakeBody.length-1];
-    let nextPosition: string;
-
-    switch (direction) {
-        case "UP":
-            nextPosition = grid[snakeHead.y - 1][snakeHead.x];
-            break;
-        case "LEFT":
-            nextPosition = grid[snakeHead.y][snakeHead.x - 1];
-            break;
-        case "DOWN":
-            nextPosition = grid[snakeHead.y + 1][snakeHead.x];
-            break;
-        case "RIGHT":
-            nextPosition = grid[snakeHead.y][snakeHead.x + 1];
-            break;
-    }
+    const position = GetNextPosition(gridWidth, gridHeight, snakeHead, direction);
+    const positionContent = grid[position.y][position.x];
 
     // FIXME: When a snake eats a fruit the tail does not retract. A different snake can hit this tail and would not die.
-    return nextPosition !== "." && nextPosition !== "F" && nextPosition[0] !== "T";
+    return positionContent !== "." && positionContent !== "F" && positionContent[0] !== "T";
 }
 
 export function CheckForFruit(gameData: SnakeGameData, playerIndex: number): GridCellLocation | undefined {
     const player = gameData.players[playerIndex];
     const { direction, snakeBody } = player;
-    const { fruits } = gameData;
+    const { fruits, options: { gridHeight, gridWidth } } = gameData;
     const snakeHead = snakeBody[snakeBody.length-1];
-
-    switch (direction) {
-        case "UP":
-            return fruits.find((fruit) => snakeHead.x === fruit.x && snakeHead.y === fruit.y + 1);
-        case "LEFT":
-            return fruits.find((fruit) => snakeHead.x === fruit.x + 1 && snakeHead.y === fruit.y);
-        case "DOWN":
-            return fruits.find((fruit) => snakeHead.x === fruit.x && snakeHead.y === fruit.y - 1);
-        case "RIGHT":
-            return fruits.find((fruit) => snakeHead.x === fruit.x - 1 && snakeHead.y === fruit.y);
-    }
+    const nextPosition = GetNextPosition(gridWidth, gridHeight, snakeHead, direction);
+    return fruits.find(fruit => nextPosition.x === fruit.x && nextPosition.y === fruit.y);
 }
 
 export function CheckForGameOver(gameData: SnakeGameData): boolean {
@@ -162,21 +114,13 @@ export function CheckForGameOver(gameData: SnakeGameData): boolean {
 }
 
 export function GetNewHeadPosition(gameData: SnakeGameData, playerIndex: number): SnakePieceCell {
-    const player = gameData.players[playerIndex];
+    const { players, options: { gridHeight, gridWidth } } = gameData;
+    const player = players[playerIndex];
     const { direction, snakeBody } = player;
     const snakeHead = snakeBody[snakeBody.length-1];
-    const { x, y, color } = snakeHead;
-
-    switch (direction) {
-        case "UP":
-            return { x, y: y - 1, color, direction };
-        case "LEFT":
-            return { y, x: x - 1, color, direction };
-        case "DOWN":
-            return { x, y: y + 1, color, direction };
-        case "RIGHT":
-            return { y, x: x + 1, color, direction };
-    }
+    const { color } = snakeHead;
+    const newPosition = GetNextPosition(gridWidth, gridHeight, snakeHead, direction);
+    return {...newPosition, color, direction};
 }
 
 export function SetupNewFruitLocation(gameData: SnakeGameData) {

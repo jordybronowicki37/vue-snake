@@ -1,7 +1,7 @@
 import {GridCellLocation, GridData} from "../../../grid/GridTypes.ts";
 import {
     SnakeColors,
-    SnakeGameData,
+    SnakeGameData, SnakeGameDirections,
     SnakeGameOptions,
     SnakePieceCell,
     SnakePieceType,
@@ -31,6 +31,27 @@ export function ResetGrid(gameData: GridData) {
         for (let j = 0; j < gameData[0].length; j++) {
             gameData[i][j] = ".";
         }
+    }
+}
+
+export function GetNextPosition(
+    gridWidth: number,
+    gridHeight: number,
+    position: GridCellLocation,
+    direction: SnakeGameDirections): GridCellLocation {
+    switch (direction) {
+        case "UP":
+            if (position.y === 0) return { y: gridHeight-1, x: position.x }
+            return { y:position.y - 1, x:position.x };
+        case "LEFT":
+            if (position.x === 0) return { y: position.y, x: gridWidth-1 }
+            return { y:position.y, x:position.x - 1 };
+        case "DOWN":
+            if (position.y === gridHeight-1) return { y: 0, x: position.x }
+            return { y:position.y + 1, x:position.x };
+        case "RIGHT":
+            if (position.x === gridWidth-1) return { y: position.y, x: 0 }
+            return { y:position.y, x:position.x + 1 };
     }
 }
 
