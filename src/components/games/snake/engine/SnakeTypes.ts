@@ -37,3 +37,15 @@ export type SnakeGameOptions = {
     snakeSize: number;
     snakeGrowth: boolean;
 }
+
+export type SnakeLevelProgression = {
+    level: string;
+    completedChallenges: [boolean, boolean, boolean];
+    highScore: number;
+}
+
+export type SnakeStorage = {
+    soloProgression: {
+        [key: string]: SnakeLevelProgression
+    };
+}
