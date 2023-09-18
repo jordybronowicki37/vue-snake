@@ -18,13 +18,13 @@ const router = useRouter();
       <h2>Battle</h2>
       <p>Face off against your friends in a fast-paced, last-snake-standing battle. Use
         cunning moves to emerge as the victor in this intense multiplayer showdown.</p>
-      <button disabled>WIP</button>
+      <button v-on:click="router.push('/game/battle')">Play ⮞</button>
     </div>
     <div class="mode-card ">
       <h2>Versus</h2>
       <p>Compete in separate boards to collect fruits and outlast your opponent in this head-to-head
         challenge. Coordinate your strategy and prove your snake supremacy in this multiplayer rivalry.</p>
-      <button v-on:click="router.push('/game/versus')">Play ⮞</button>
+      <button disabled>WIP</button>
     </div>
   </div>
 </div>
