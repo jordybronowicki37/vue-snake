@@ -115,12 +115,10 @@ export function CheckForGameOver(gameData: SnakeGameData): boolean {
 
 export function GetNewHeadPosition(gameData: SnakeGameData, playerIndex: number): SnakePieceCell {
     const { players, options: { gridHeight, gridWidth } } = gameData;
-    const player = players[playerIndex];
-    const { direction, snakeBody } = player;
+    const { direction, snakeBody } = players[playerIndex];
     const snakeHead = snakeBody[snakeBody.length-1];
-    const { color } = snakeHead;
     const newPosition = GetNextPosition(gridWidth, gridHeight, snakeHead, direction);
-    return {...newPosition, color, direction};
+    return {...newPosition, player: snakeHead.player, direction};
 }
 
 export function SetupNewFruitLocation(gameData: SnakeGameData) {

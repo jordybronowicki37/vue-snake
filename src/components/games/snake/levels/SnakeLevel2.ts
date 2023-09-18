@@ -6,6 +6,6 @@ export function SetupSnakeLevel2(): SnakeGameData {
     return SetupGame({
             level: "1-1",
         },
-        [GeneratePlayer(12, 12, StandardSnakeOptions.snakeSize, "BLUE")]
+        [GeneratePlayer(12, 12, StandardSnakeOptions.snakeSize)]
     );
 }

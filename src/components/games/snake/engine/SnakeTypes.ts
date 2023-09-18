@@ -1,15 +1,13 @@
-import {GridCellLocation, GridData} from "../../../grid/GridTypes";
+import {CellStyles, GridCellLocation, GridData} from "../../../grid/GridTypes";
 
 export type SnakeGameDirections = "UP" | "DOWN" | "LEFT" | "RIGHT";
 export const AllSnakeDirections: SnakeGameDirections[] = ["UP", "DOWN", "LEFT", "RIGHT"];
 export type SnakePieceType = "HEAD" | "STRAIGHT" | "CURVE" | "TAIL";
 export const AllSnakePieceTypes: SnakePieceType[] = ["HEAD", "STRAIGHT", "CURVE", "TAIL"];
-export type SnakeColors = "GREEN" | "BLUE";
-export const AllSnakeColors: SnakeColors[] = ["GREEN", "BLUE"];
 
 export type SnakePieceCell = GridCellLocation & {
     direction: SnakeGameDirections;
-    color: SnakeColors;
+    player: number;
 }
 
 export type SnakePlayer = {
@@ -22,6 +20,7 @@ export type SnakePlayer = {
 
 export type SnakeGameData = {
     options: SnakeGameOptions;
+    assetStyles: CellStyles;
     grid: GridData;
     fruits: GridCellLocation[];
     players: SnakePlayer[];
@@ -45,6 +44,7 @@ export type SnakeLevelProgression = {
 }
 
 export type SnakeStorage = {
+    snakeStyles: string[];
     soloProgression: {
         [key: string]: SnakeLevelProgression
     };

@@ -2,7 +2,6 @@
 import Grid from "../../../grid/Grid.vue";
 import {ref} from "vue";
 import SnakeGameOver from "./SnakeGameOver.vue";
-import {SnakeGameCellStyles} from "../engine/SnakeStyling";
 import {SnakeEngine} from "../engine/SnakeEngine.ts";
 import {useRoute} from "vue-router";
 import SnakePause from "./SnakePause.vue";
@@ -21,7 +20,7 @@ engine.value.StartEngine();
       <SnakeScore v-bind:game-data="engine.gameData"/>
       <Grid
           v-bind:data="engine.gameData.grid"
-          v-bind:cellStyles="SnakeGameCellStyles()"
+          v-bind:cellStyles="engine.gameData.assetStyles"
           v-bind:height="engine.gameData.options.gridHeight"
           v-bind:width="engine.gameData.options.gridWidth"/>
     </div>

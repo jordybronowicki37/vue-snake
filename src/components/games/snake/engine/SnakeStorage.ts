@@ -4,7 +4,10 @@ export function GetSnakeStorage(): SnakeStorage {
     const rawStorage = localStorage.getItem("snakeGame");
     if (rawStorage !== null) return JSON.parse(rawStorage);
 
-    const basicStorage: SnakeStorage = {soloProgression: {}};
+    const basicStorage: SnakeStorage = {
+        snakeStyles: ["Green", "Blue"],
+        soloProgression: {}
+    };
     SaveSnakeStorage(basicStorage);
     return basicStorage;
 }

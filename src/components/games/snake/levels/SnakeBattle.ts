@@ -7,8 +7,8 @@ export function SetupSnakeBattle(): SnakeGameData {
             level: "versus",
         },
         [
-            GeneratePlayer(8, 12, StandardSnakeOptions.snakeSize, "BLUE"),
-            GeneratePlayer(16, 12, StandardSnakeOptions.snakeSize, "GREEN")
+            GeneratePlayer(8, 12, StandardSnakeOptions.snakeSize),
+            GeneratePlayer(16, 12, StandardSnakeOptions.snakeSize)
         ]
     );
 }

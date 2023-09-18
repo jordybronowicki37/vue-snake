@@ -1,9 +1,11 @@
 import CSS from "csstype";
 import {CellStyles} from "../../../grid/GridTypes";
-import {AllSnakeColors, AllSnakeDirections, AllSnakePieceTypes, SnakeGameDirections} from "./SnakeTypes";
+import {AllSnakeDirections, AllSnakePieceTypes, SnakeGameDirections} from "./SnakeTypes";
 import {CSSProperties} from "@vue/runtime-dom";
+import {GenerateTypeIndex} from "./SnakeHelpers.ts";
 
 export function SnakeGameCellStyles(
+    selectedSnakeStyles: string[],
     backgroundColor: CSS.Property.BackgroundColor = "#444",
     outlineColor: CSS.Property.OutlineColor = "#333"): CellStyles {
     return {
@@ -15,22 +17,23 @@ export function SnakeGameCellStyles(
         },
         "F": GetImageStyling("url(src/assets/objects/Fruit.png)", backgroundColor, outlineColor),
         "C": GetImageStyling("url(src/assets/objects/Crate.png)", backgroundColor, outlineColor),
-        ...GenerateAssetsList(backgroundColor, outlineColor),
+        ...GenerateAssetsList(selectedSnakeStyles, backgroundColor, outlineColor),
     }
 }
 
 function GenerateAssetsList(
+    snakeTypes: string[],
     backgroundColor: CSS.Property.BackgroundColor,
     outlineColor: CSS.Property.OutlineColor): CellStyles {
     let styles: CellStyles = {};
 
     // Create all combinations of assets
-    for (const color of AllSnakeColors) {
+    for (let i = 0; i < snakeTypes.length; i++) {
+        const color = snakeTypes[i]
         for (const pieceType of AllSnakePieceTypes) {
             for (const direction of AllSnakeDirections) {
-                const capColor = color[0].toUpperCase() + color.slice(1).toLowerCase();
                 const capPieceType = pieceType[0].toUpperCase() + pieceType.slice(1).toLowerCase();
-                styles[`${pieceType[0]}${color[0]}${direction[0]}`] = GetImageStyling(`url(src/assets/snake/Snake${capColor}${capPieceType}.png)`, backgroundColor, outlineColor, direction);
+                styles[GenerateTypeIndex({player:i, direction}, pieceType)] = GetImageStyling(`url(src/assets/snakes/${color}/Snake${color}${capPieceType}.png)`, backgroundColor, outlineColor, direction);
             }
         }
     }
