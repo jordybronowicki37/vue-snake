@@ -89,7 +89,7 @@ export function CheckForSnake(gameData: SnakeGameData, playerIndex: number): boo
     const position = GetNextPosition(gridWidth, gridHeight, snakeHead, direction);
     const positionContent = grid[position.y][position.x];
 
-    // FIXME: When a snake eats a fruit the tail does not retract. A different snake can hit this tail and would not die.
+    // FIXME: When a snakes eats a fruit the tail does not retract. A different snakes can hit this tail and would not die.
     return positionContent !== "." && positionContent !== "F" && positionContent[0] !== "T";
 }
 
@@ -153,7 +153,7 @@ export function InsertSnakeBodyPiecesIntoGrid(gameGrid: GridData, snakeBody: Sna
             previousPiece = snakeBody[i-1];
         }
 
-        // Tail of snake
+        // Tail of snakes
         if (i+1 === snakeBody.length) {
             InsertValueIntoGrid(gameGrid, bodyPiece, GenerateTypeIndex({...bodyPiece, direction: previousPiece.direction}, "TAIL"));
             break;
