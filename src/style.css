@@ -23,3 +23,23 @@ html, body, p {
   padding: 0;
   margin: 0;
 }
+
+:root {
+  --difficulty-1: cornflowerblue;
+  --difficulty-2: #64a10c;
+  --difficulty-3: orange;
+  --difficulty-4: red;
+}
+
+.difficulty-1 {
+  --difficulty-color: var(--difficulty-1);
+}
+.difficulty-2 {
+  --difficulty-color: var(--difficulty-2);
+}
+.difficulty-3 {
+  --difficulty-color: var(--difficulty-3);
+}
+.difficulty-4 {
+  --difficulty-color: var(--difficulty-4);
+}

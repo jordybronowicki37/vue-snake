@@ -1,5 +1,15 @@
 <script setup lang="ts">
 import SnakeLevelTile from "./SnakeLevelTile.vue";
+import {ref} from "vue";
+
+const selectedLevel = ref<string>("");
+
+function onOpenInfo(level: string) {
+  selectedLevel.value = level;
+}
+function onCloseInfo() {
+  selectedLevel.value = "";
+}
 </script>
 
 <template>
@@ -9,41 +19,41 @@ import SnakeLevelTile from "./SnakeLevelTile.vue";
     <div class="world-container world-1">
       <h2>World 1 - Easy</h2>
       <div>
-        <SnakeLevelTile level="1-1"/>
-        <SnakeLevelTile level="1-2"/>
-        <SnakeLevelTile level="1-3"/>
-        <SnakeLevelTile level="1-4"/>
-        <SnakeLevelTile level="1-5"/>
+        <SnakeLevelTile level="1-1" :opened-info="selectedLevel==='1-1'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="1-2" :opened-info="selectedLevel==='1-2'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="1-3" :opened-info="selectedLevel==='1-3'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="1-4" :opened-info="selectedLevel==='1-4'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="1-5" :opened-info="selectedLevel==='1-5'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
       </div>
     </div>
     <div class="world-container world-2">
       <h2>World 2 - Medium</h2>
       <div>
-        <SnakeLevelTile level="2-1"/>
-        <SnakeLevelTile level="2-2"/>
-        <SnakeLevelTile level="2-3"/>
-        <SnakeLevelTile level="2-4"/>
-        <SnakeLevelTile level="2-5"/>
+        <SnakeLevelTile level="2-1" :opened-info="selectedLevel==='2-1'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="2-2" :opened-info="selectedLevel==='2-2'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="2-3" :opened-info="selectedLevel==='2-3'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="2-4" :opened-info="selectedLevel==='2-4'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="2-5" :opened-info="selectedLevel==='2-5'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
       </div>
     </div>
     <div class="world-container world-3">
       <h2>World 3 - Hard</h2>
       <div>
-        <SnakeLevelTile level="3-1"/>
-        <SnakeLevelTile level="3-2"/>
-        <SnakeLevelTile level="3-3"/>
-        <SnakeLevelTile level="3-4"/>
-        <SnakeLevelTile level="3-5"/>
+        <SnakeLevelTile level="3-1" :opened-info="selectedLevel==='3-1'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="3-2" :opened-info="selectedLevel==='3-2'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="3-3" :opened-info="selectedLevel==='3-3'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="3-4" :opened-info="selectedLevel==='3-4'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="3-5" :opened-info="selectedLevel==='3-5'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
       </div>
     </div>
     <div class="world-container world-4">
       <h2>World 4 - Expert</h2>
       <div>
-        <SnakeLevelTile level="4-1"/>
-        <SnakeLevelTile level="4-2"/>
-        <SnakeLevelTile level="4-3"/>
-        <SnakeLevelTile level="4-4"/>
-        <SnakeLevelTile level="4-5"/>
+        <SnakeLevelTile level="4-1" :opened-info="selectedLevel==='4-1'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="4-2" :opened-info="selectedLevel==='4-2'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="4-3" :opened-info="selectedLevel==='4-3'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="4-4" :opened-info="selectedLevel==='4-4'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile level="4-5" :opened-info="selectedLevel==='4-5'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
       </div>
     </div>
   </div>
