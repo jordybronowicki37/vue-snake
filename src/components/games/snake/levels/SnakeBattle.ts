@@ -4,7 +4,7 @@ import {GeneratePlayer, SetupGame} from "../engine/SnakeHelpers.ts";
 
 export function SetupSnakeBattle(): SnakeGameData {
     return SetupGame({
-            level: "versus",
+            level: "battle",
         },
         [
             GeneratePlayer(8, 12, StandardSnakeOptions.snakeSize),
