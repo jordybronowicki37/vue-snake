@@ -45,9 +45,10 @@ const selectSkin = (skin: string): void => {
 
 .current-selected-container {
   display: flex;
+  align-items: center;
   gap: 2rem;
-  background-color: cornflowerblue;
   padding: 1rem;
+  background-color: var(--difficulty-1);
 }
 
 .snake-types {

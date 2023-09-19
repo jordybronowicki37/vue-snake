@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import SnakeLevelTile from "./SnakeLevelTile.vue";
+import SnakeSkinItem from "./SnakeSkinItem.vue";
 import {ref} from "vue";
+import {GetSnakeStorage} from "../engine/SnakeStorage.ts";
+import {useRouter} from "vue-router";
 
+const router = useRouter();
+const selectedSkin = ref<string>(GetSnakeStorage().snakeSkins[0]);
 const selectedLevel = ref<string>("");
 
 function onOpenInfo(level: string) {
@@ -14,6 +19,12 @@ function onCloseInfo() {
 
 <template>
 <div>
+  <div class="skin-container">
+    <div class="selected-skin">
+      <h2>Selected skin:</h2>
+      <SnakeSkinItem selected-snake="" :type="selectedSkin" :on-select="() => router.push('/snake-skin')"/>
+    </div>
+  </div>
   <div class="worlds-container">
     <h1>Select a level</h1>
     <div class="world-container world-1">
@@ -61,6 +72,14 @@ function onCloseInfo() {
 </template>
 
 <style scoped>
+.selected-skin {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+  padding: 1rem;
+  background-color: var(--difficulty-1);
+}
 .worlds-container {
   display: flex;
   flex-direction: column;
