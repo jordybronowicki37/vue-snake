@@ -17,13 +17,13 @@ if (level === "1-1") {
 </script>
 
 <template>
-  <div class="level-tile-container">
+  <div class="level-tile-container" :class="difficultyClass">
     <div class="level-tile">
       <div class="star-indicator floating-star-indicator" v-bind:class="[`star-${amountOfChallengesCompleted}`]"/>
-      <button type="button" :class="[difficultyClass]" v-on:click="() => infoExpanded = !infoExpanded">{{level}}</button>
+      <button type="button" v-on:click="() => infoExpanded = !infoExpanded">{{level}}</button>
     </div>
     <transition name="fade" mode="out-in">
-      <div :key="infoExpanded+''" class="level-info" :class="[difficultyClass]" :hidden="!infoExpanded">
+      <div :key="infoExpanded+''" class="level-info" :hidden="!infoExpanded">
         <div class="level-info-content-container">
           <div class="inverted-corners"><div/><div/></div>
           <div class="personal-stats">
@@ -71,6 +71,7 @@ if (level === "1-1") {
   border: none;
   border-radius: 1rem;
   cursor: pointer;
+  background-color: var(--difficulty-color);
 }
 .level-info {
   position: absolute;
@@ -81,6 +82,7 @@ if (level === "1-1") {
   padding: 0.5rem;
   width: 15rem;
   border-radius: 1rem;
+  background-color: var(--difficulty-color);
 }
 .level-info-content-container {
   position: relative;
@@ -116,12 +118,12 @@ if (level === "1-1") {
 .inverted-corners div:first-child:before {
   bottom: 0;
   right: 0;
-  box-shadow: 10px 10px 0 0 cornflowerblue;
+  box-shadow: 10px 10px 0 0 var(--difficulty-color);
 }
 .inverted-corners div:last-child:before {
   bottom: 0;
   left: 0;
-  box-shadow: -10px 10px 0 0 cornflowerblue;
+  box-shadow: -10px 10px 0 0 var(--difficulty-color);
 }
 .level-challenges>h3 {
   margin: 0;
@@ -138,18 +140,6 @@ if (level === "1-1") {
   border: 2px solid #eee;
   border-radius: 1rem;
   cursor: pointer;
-}
-.difficulty-1 {
-  background-color: cornflowerblue;
-}
-.difficulty-2 {
-  background-color: #64a10c;
-}
-.difficulty-3 {
-  background-color: orange;
-}
-.difficulty-4 {
-  background-color: red;
 }
 .floating-star-indicator {
   top: 5px;
