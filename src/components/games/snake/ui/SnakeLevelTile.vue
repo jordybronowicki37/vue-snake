@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
 import {GetLevelData, SaveLevelData} from "../engine/SnakeStorage";
-import {ref} from "vue";
 
-const {level} = defineProps<{level:string}>();
+const {level, openedInfo, onOpenInfo, onCloseInfo} = defineProps<{
+  level:string;
+  openedInfo: boolean;
+  onOpenInfo: (level: string) => void;
+  onCloseInfo: () => void;
+}>();
 const router = useRouter();
 const levelProgression = GetLevelData(level);
 const amountOfChallengesCompleted = levelProgression.completedChallenges.filter(c => c).length;
-const infoExpanded = ref<boolean>(false);
 const difficultyClass = `difficulty-${level[0]}`;
 if (level === "1-1") {
   levelProgression.completedChallenges = [true, true, false];
@@ -20,10 +23,10 @@ if (level === "1-1") {
   <div class="level-tile-container" :class="difficultyClass">
     <div class="level-tile">
       <div class="star-indicator floating-star-indicator" v-bind:class="[`star-${amountOfChallengesCompleted}`]"/>
-      <button type="button" v-on:click="() => infoExpanded = !infoExpanded">{{level}}</button>
+      <button type="button" v-on:click="() => openedInfo ? onCloseInfo() : onOpenInfo(level)">{{level}}</button>
     </div>
     <transition name="fade" mode="out-in">
-      <div :key="infoExpanded+''" class="level-info" :hidden="!infoExpanded">
+      <div :key="openedInfo+''" class="level-info" :hidden="!openedInfo">
         <div class="level-info-content-container">
           <div class="inverted-corners"><div/><div/></div>
           <div class="personal-stats">
