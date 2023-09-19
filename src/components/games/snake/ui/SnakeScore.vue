@@ -1,33 +1,37 @@
 <script setup lang="ts">
 import {SnakeGameData} from "../engine/SnakeTypes";
+import {GetLevelData} from "../engine/SnakeStorage.ts";
 const {gameData} = defineProps<{ gameData: SnakeGameData }>();
-const difficultyClass = `difficulty-${gameData.options.level[0]}`;
+const {players, options} = gameData;
+const difficultyClass = `difficulty-${options.level[0]}`;
+const highScore = GetLevelData(options.level).highScore;
+const currentScore = players[0].score;
 </script>
 
 <template>
 <div class="game-score-container-wrapper">
-  <div class="solo-game-score-container" v-if="gameData.players.length === 1">
+  <div class="solo-game-score-container" v-if="players.length === 1">
     <div>
       <h3 class="level-line" :class="[difficultyClass]">
         <span>Level:</span>
-        <span>{{gameData.options.level}}</span>
+        <span>{{options.level}}</span>
       </h3>
       <div class="score-line">
         <div>Highscore:</div>
-        <div>{{gameData.players[0].score}}</div>
+        <div>{{highScore > players[0].score ? highScore:players[0].score }}</div>
       </div>
       <div class="score-line">
         <div>Score:</div>
-        <div>{{gameData.players[0].score}}</div>
+        <div>{{players[0].score}}</div>
       </div>
     </div>
   </div>
-  <div class="multiplayer-game-score-container" v-if="gameData.players.length > 1">
-    <div v-for="i in gameData.players.length" class="player-score-container">
+  <div class="multiplayer-game-score-container" v-if="players.length > 1">
+    <div v-for="i in players.length" class="player-score-container">
       <h3 class="player-name" :class="[`difficulty-${i}`]">Player {{i}}</h3>
       <div class="score-line">
         <div>Score:</div>
-        <div>{{gameData.players[i-1].score}}</div>
+        <div>{{players[i-1].score}}</div>
       </div>
     </div>
   </div>
