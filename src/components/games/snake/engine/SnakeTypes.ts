@@ -44,7 +44,7 @@ export type SnakeLevelProgression = {
 }
 
 export type SnakeStorage = {
-    snakeStyles: string[];
+    snakeSkins: string[];
     soloProgression: {
         [key: string]: SnakeLevelProgression
     };

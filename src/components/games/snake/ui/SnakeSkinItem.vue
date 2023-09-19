@@ -12,7 +12,7 @@ withDefaults(
 </script>
 
 <template>
-  <div class="snake-type">
+  <div class="snake-skin">
     <div class="preview"
          v-on:click="onSelect(type)"
          v-bind:class="[selectedSnake===type&&'selected', canSelect&&'can-select']">
@@ -22,13 +22,13 @@ withDefaults(
         <div class="body-piece" v-bind:style="{backgroundImage: `url(src/assets/snakes/${type}/Snake${type}Tail.png)`}"/>
       </div>
     </div>
-    <p class="type-name">{{type}}</p>
+    <p class="skin-name">{{type}}</p>
   </div>
 
 </template>
 
 <style scoped>
-.snake-type {
+.snake-skin {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,7 +70,7 @@ withDefaults(
   background-size: cover;
 }
 
-.type-name {
+.skin-name {
   cursor: default;
 }
 </style>

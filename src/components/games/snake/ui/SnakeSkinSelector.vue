@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import SnakeTypeItem from "./SnakeTypeItem.vue";
+import SnakeSkinItem from "./SnakeSkinItem.vue";
 import {GetSnakeStorage, SaveSnakeStorage} from "../engine/SnakeStorage";
 import {ref} from "vue";
 
-const selectedSnake = ref<string>(GetSnakeStorage().snakeStyles[0]);
+const selectedSkin = ref<string>(GetSnakeStorage().snakeSkins[0]);
 
-const selectSnake = (type: string): void => {
+const selectSkin = (skin: string): void => {
   const storage = GetSnakeStorage();
-  storage.snakeStyles[0] = type;
-  selectedSnake.value = type;
+  storage.snakeSkins[0] = skin;
+  selectedSkin.value = skin;
   SaveSnakeStorage(storage);
 }
 </script>
 
 <template>
-  <div class="snake-type-selector">
+  <div class="snake-skin-selector">
     <div class="top">
-      <h1>Select a snake style</h1>
+      <h1>Select a snake skin</h1>
       <div class="current-selected-container">
         <h2>Current: </h2>
         <transition name="fade" mode="out-in">
-          <SnakeTypeItem :key="selectedSnake" v-bind:type="selectedSnake" v-bind:can-select="false" v-bind:on-select="()=>{}" selected-snake=""/>
+          <SnakeSkinItem :key="selectedSkin" v-bind:type="selectedSkin" v-bind:can-select="false" v-bind:on-select="()=>{}" selected-snake=""/>
         </transition>
       </div>
     </div>
 
     <div class="snake-types">
-      <SnakeTypeItem v-bind:on-select="selectSnake" type="Green" v-bind:selected-snake="selectedSnake"/>
-      <SnakeTypeItem v-bind:on-select="selectSnake" type="Blue" v-bind:selected-snake="selectedSnake"/>
+      <SnakeSkinItem v-bind:on-select="selectSkin" type="Green" v-bind:selected-snake="selectedSkin"/>
+      <SnakeSkinItem v-bind:on-select="selectSkin" type="Blue" v-bind:selected-snake="selectedSkin"/>
     </div>
   </div>
 </template>
 
 <style scoped>
-.snake-type-selector {
+.snake-skin-selector {
   padding: 4rem 8rem;
 }
 

@@ -79,7 +79,7 @@ export function SetupGame(options: Partial<SnakeGameOptions>, players: SnakePlay
 
     // Setup initial data
     const gameData: SnakeGameData = {
-        assetStyles: SnakeGameCellStyles(localData.snakeStyles),
+        assetStyles: SnakeGameCellStyles(localData.snakeSkins),
         options: completedOptions,
         gameOver: false,
         fruits: [],

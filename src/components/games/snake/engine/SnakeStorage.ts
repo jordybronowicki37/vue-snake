@@ -5,7 +5,7 @@ export function GetSnakeStorage(): SnakeStorage {
     if (rawStorage !== null) return JSON.parse(rawStorage);
 
     const basicStorage: SnakeStorage = {
-        snakeStyles: ["Green", "Blue"],
+        snakeSkins: ["Green", "Blue"],
         soloProgression: {}
     };
     SaveSnakeStorage(basicStorage);
