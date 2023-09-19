@@ -78,7 +78,10 @@ const router = useRouter();
   background-color: #555;
   align-self: end;
   margin: 0.5rem;
-  cursor: not-allowed;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 
   &:hover:not(:disabled) {
     cursor: pointer;
