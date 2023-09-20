@@ -23,34 +23,33 @@ export const StandardPlayerOptions: Omit<Omit<SnakePlayer, "snakeBody">, "queued
     direction: "UP",
 }
 
-export function MoveForward(gameData: SnakeGameData): SnakeGameData {
-    for (let i = 0; i < gameData.players.length; i++) {
-        const player = gameData.players[i];
+export function MoveForward(gameData: SnakeGameData, playerId: number): SnakeGameData {
 
-        // Execute a move if it is queued
-        let newDirection = player.queuedMoves.shift();
-        if (newDirection) player.direction = newDirection;
+    const player = gameData.players[playerId];
 
-        if (CheckForSnake(gameData, i)) {
-            player.gameOver = true;
-            if (CheckForGameOver(gameData)) {
-                gameData.gameOver = true;
-                return gameData;
-            }
+    // Execute a move if it is queued
+    let newDirection = player.queuedMoves.shift();
+    if (newDirection) player.direction = newDirection;
+
+    if (CheckForSnake(gameData, playerId)) {
+        player.gameOver = true;
+        if (CheckForGameOver(gameData)) {
+            gameData.gameOver = true;
+            return gameData;
         }
-
-        const hitFruit = CheckForFruit(gameData, i);
-        if (hitFruit !== undefined) {
-            player.score++;
-            gameData.fruits = gameData.fruits.filter(v => v !== hitFruit);
-            SetupNewFruitLocation(gameData);
-            player.snakeBody.unshift(player.snakeBody[0]);
-        }
-
-        player.snakeBody.shift();
-        const snakeHead = GetNewHeadPosition(gameData, i)
-        player.snakeBody.push(snakeHead);
     }
+
+    const hitFruit = CheckForFruit(gameData, playerId);
+    if (hitFruit !== undefined) {
+        player.score++;
+        gameData.fruits = gameData.fruits.filter(v => v !== hitFruit);
+        SetupNewFruitLocation(gameData);
+        player.snakeBody.unshift(player.snakeBody[0]);
+    }
+
+    player.snakeBody.shift();
+    const snakeHead = GetNewHeadPosition(gameData, playerId)
+    player.snakeBody.push(snakeHead);
 
     ResetGrid(gameData.grid);
     for (const fruit of gameData.fruits) {
