@@ -27,10 +27,10 @@ export function SetupEmptyGrid(height: number, width: number): GridData {
     return grid;
 }
 
-export function ResetGrid(gameData: GridData) {
-    for (let i = 0; i < gameData.length; i++) {
-        for (let j = 0; j < gameData[0].length; j++) {
-            gameData[i][j] = ".";
+export function ResetGrid(gameData: SnakeGameData) {
+    for (const player of gameData.players) {
+        for (const bodyPiece of player.snakeBody) {
+            gameData.grid[bodyPiece.y][bodyPiece.x] = ".";
         }
     }
 }

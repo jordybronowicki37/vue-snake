@@ -14,7 +14,7 @@ export const StandardSnakeOptions: SnakeGameOptions = {
     gridWidth: 25,
     fruitAmount: 1,
     snakeGrowth: true,
-    snakeSize: 3,
+    obstacles: [],
 }
 
 export const StandardPlayerOptions: Omit<Omit<SnakePlayer, "snakeBody">, "queuedMoves"> = {
@@ -24,7 +24,6 @@ export const StandardPlayerOptions: Omit<Omit<SnakePlayer, "snakeBody">, "queued
 }
 
 export function MoveForward(gameData: SnakeGameData, playerId: number): SnakeGameData {
-
     const player = gameData.players[playerId];
 
     // Execute a move if it is queued
@@ -47,11 +46,12 @@ export function MoveForward(gameData: SnakeGameData, playerId: number): SnakeGam
         player.snakeBody.unshift(player.snakeBody[0]);
     }
 
+    ResetGrid(gameData);
+    
     player.snakeBody.shift();
     const snakeHead = GetNewHeadPosition(gameData, playerId)
     player.snakeBody.push(snakeHead);
 
-    ResetGrid(gameData.grid);
     for (const fruit of gameData.fruits) {
         InsertValueIntoGrid(gameData.grid, fruit, "F");
     }

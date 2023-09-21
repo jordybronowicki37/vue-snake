@@ -1,4 +1,3 @@
-import {StandardSnakeOptions} from "../engine/SnakeLogic";
 import {SnakeGameData} from "../engine/SnakeTypes";
 import {GeneratePlayer, SetupGame} from "../engine/SnakeHelpers.ts";
 
@@ -7,8 +6,8 @@ export function SetupSnakeBattle(): SnakeGameData {
             level: "battle",
         },
         [
-            GeneratePlayer(8, 12, StandardSnakeOptions.snakeSize),
-            GeneratePlayer(16, 12, StandardSnakeOptions.snakeSize)
+            GeneratePlayer(8, 12, 3),
+            GeneratePlayer(16, 12, 3)
         ]
     );
 }
