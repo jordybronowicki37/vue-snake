@@ -15,7 +15,7 @@ import {
 import {SnakeGameCellStyles} from "./SnakeStyling.ts";
 import {GetSnakeStorage} from "./SnakeStorage.ts";
 
-export function SetupEmptyGrid(height: number, width: number): GridData {
+export function SetupEmptyLevel(height: number, width: number, staticObstacles: GridCellData[]): GridData {
     const grid: GridData = [];
     for (let i = 0; i < height; i++) {
         let row: string[] = [];
@@ -23,6 +23,9 @@ export function SetupEmptyGrid(height: number, width: number): GridData {
             row.push(".");
         }
         grid.push(row);
+    }
+    for (const obstacle of staticObstacles) {
+        grid[obstacle.y][obstacle.x] = obstacle.value;
     }
     return grid;
 }
@@ -58,8 +61,8 @@ export function InsertValueIntoGrid(gameData: GridData, location: GridCellLocati
 
 export function SetupGame(options: Partial<SnakeGameOptions>, players: SnakePlayer[]): SnakeGameData {
     const completedOptions: SnakeGameOptions = {...StandardSnakeOptions, ...options}
-    const { gridHeight, gridWidth, fruitAmount } = completedOptions;
-    const grid = SetupEmptyGrid(gridHeight, gridWidth);
+    const { gridHeight, gridWidth, fruitAmount, obstacles } = completedOptions;
+    const grid = SetupEmptyLevel(gridHeight, gridWidth, obstacles);
     const localData = GetSnakeStorage();
 
     // Make sure the correct player index is set to the body pieces

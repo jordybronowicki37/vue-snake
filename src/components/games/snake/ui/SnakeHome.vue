@@ -2,13 +2,13 @@
 import Grid from "../../../grid/Grid.vue";
 import {ref} from "vue";
 import {SnakeGameCellStyles} from "../engine/SnakeStyling";
-import {SetupEmptyGrid} from "../engine/SnakeHelpers.ts";
+import {SetupEmptyLevel} from "../engine/SnakeHelpers.ts";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
 const GRID_HEIGHT = 3;
 const GRID_WIDTH = 40;
-const grid = ref<string[][]>(SetupEmptyGrid(GRID_HEIGHT, GRID_WIDTH));
+const grid = ref<string[][]>(SetupEmptyLevel(GRID_HEIGHT, GRID_WIDTH, []));
 
 grid.value[1][6] = "F";
 grid.value[1][15] = "F";
