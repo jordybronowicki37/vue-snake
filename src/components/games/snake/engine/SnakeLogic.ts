@@ -6,7 +6,7 @@ import {
     SnakePlayer,
     SnakeGameOptions
 } from "./SnakeTypes";
-import {GenerateTypeIndex, GetNextPosition, InsertValueIntoGrid, ResetGrid} from "./SnakeHelpers.ts";
+import {GenerateTypeIndex, GetNextPosition, InsertValueIntoGrid} from "./SnakeHelpers.ts";
 
 export const StandardSnakeOptions: SnakeGameOptions = {
     level: "1-1",
@@ -30,7 +30,8 @@ export function MoveForward(gameData: SnakeGameData, playerId: number): SnakeGam
     let newDirection = player.queuedMoves.shift();
     if (newDirection) player.direction = newDirection;
 
-    if (CheckForSnake(gameData, playerId)) {
+    // Check for obstacle
+    if (CheckForObstacle(gameData, playerId)) {
         player.gameOver = true;
         if (CheckForGameOver(gameData)) {
             gameData.gameOver = true;
@@ -38,6 +39,7 @@ export function MoveForward(gameData: SnakeGameData, playerId: number): SnakeGam
         }
     }
 
+    // Check for fruit
     const hitFruit = CheckForFruit(gameData, playerId);
     if (hitFruit !== undefined) {
         player.score++;
@@ -46,15 +48,15 @@ export function MoveForward(gameData: SnakeGameData, playerId: number): SnakeGam
         player.snakeBody.unshift(player.snakeBody[0]);
     }
 
-    ResetGrid(gameData);
-    
-    player.snakeBody.shift();
+    // Remove old tail
+    const oldTail = player.snakeBody.shift();
+    if (oldTail !== undefined) gameData.grid[oldTail.y][oldTail.x] = ".";
+
+    // Add new head
     const snakeHead = GetNewHeadPosition(gameData, playerId)
     player.snakeBody.push(snakeHead);
 
-    for (const fruit of gameData.fruits) {
-        InsertValueIntoGrid(gameData.grid, fruit, "F");
-    }
+    // Update entire snake body
     for (const player of gameData.players) {
         InsertSnakeBodyPiecesIntoGrid(gameData.grid, player.snakeBody);
     }
@@ -80,7 +82,7 @@ export function ChangeDirection(gameData: SnakeGameData, newDirection: SnakeGame
     }
 }
 
-export function CheckForSnake(gameData: SnakeGameData, playerIndex: number): boolean {
+export function CheckForObstacle(gameData: SnakeGameData, playerIndex: number): boolean {
     const { players, options: { gridWidth, gridHeight }, grid } = gameData;
     const player = players[playerIndex];
     const { direction, snakeBody} = player;
@@ -89,7 +91,7 @@ export function CheckForSnake(gameData: SnakeGameData, playerIndex: number): boo
     const positionContent = grid[position.y][position.x];
 
     // FIXME: When a snakes eats a fruit the tail does not retract. A different snakes can hit this tail and would not die.
-    return positionContent !== "." && positionContent !== "F" && positionContent[0] !== "T";
+    return positionContent !== "." && positionContent !== "F" && positionContent.slice(0, 2) !== "ST";
 }
 
 export function CheckForFruit(gameData: SnakeGameData, playerIndex: number): GridCellLocation | undefined {

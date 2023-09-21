@@ -27,14 +27,6 @@ export function SetupEmptyGrid(height: number, width: number): GridData {
     return grid;
 }
 
-export function ResetGrid(gameData: SnakeGameData) {
-    for (const player of gameData.players) {
-        for (const bodyPiece of player.snakeBody) {
-            gameData.grid[bodyPiece.y][bodyPiece.x] = ".";
-        }
-    }
-}
-
 export function GetNextPosition(
     gridWidth: number,
     gridHeight: number,

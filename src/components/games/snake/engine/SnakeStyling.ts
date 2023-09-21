@@ -16,7 +16,7 @@ export function SnakeGameCellStyles(
             outlineColor,
         },
         "F": GetImageStyling("url(src/assets/objects/Fruit.png)", backgroundColor, outlineColor),
-        "C": GetImageStyling("url(src/assets/objects/Crate.png)", backgroundColor, outlineColor),
+        "AC": GetImageStyling("url(src/assets/objects/Crate.png)", backgroundColor, outlineColor),
         ...GenerateAssetsList(selectedSnakeStyles, backgroundColor, outlineColor),
     }
 }
