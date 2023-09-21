@@ -1,7 +1,7 @@
-import {GridCellLocation, GridData} from "../../../grid/GridTypes.ts";
+import {GridCellData, GridCellLocation, GridData} from "../../../grid/GridTypes.ts";
 import {
     SnakeGameData, SnakeGameDirections,
-    SnakeGameOptions,
+    SnakeGameOptions, SnakeLevelOptions,
     SnakePieceCell,
     SnakePieceType,
     SnakePlayer
@@ -57,6 +57,15 @@ export function GenerateTypeIndex(snakePiece: Omit<Omit<SnakePieceCell, "x">, "y
 
 export function InsertValueIntoGrid(gameData: GridData, location: GridCellLocation, value: string) {
     gameData[location.y][location.x] = value;
+}
+
+export function SetupGameFromLevelOptions(options: SnakeLevelOptions): SnakeGameData {
+    const players = [];
+    for (const playerOptions of options.players) {
+        players.push(GeneratePlayer(playerOptions.position.x, playerOptions.position.y, playerOptions.length))
+    }
+
+    return SetupGame(options.gameOptions, players);
 }
 
 export function SetupGame(options: Partial<SnakeGameOptions>, players: SnakePlayer[]): SnakeGameData {

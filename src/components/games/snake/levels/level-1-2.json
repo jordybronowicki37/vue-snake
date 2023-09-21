@@ -1,0 +1,35 @@
+{
+  "gameOptions": {
+    "level": "1-2",
+    "gridHeight": 25,
+    "gridWidth": 25,
+    "fruitAmount": 1,
+    "snakeGrowth": true,
+    "obstacles": [
+      { "x": 8 , "y": 12, "value": "AC" },
+      { "x": 9 , "y": 12, "value": "AC" },
+      { "x": 10, "y": 12, "value": "AC" },
+      { "x": 11, "y": 12, "value": "AC" },
+      { "x": 12, "y": 12, "value": "AC" },
+      { "x": 13, "y": 12, "value": "AC" },
+      { "x": 14, "y": 12, "value": "AC" },
+      { "x": 15, "y": 12, "value": "AC" },
+      { "x": 16, "y": 12, "value": "AC" },
+      { "x": 12, "y": 8 , "value": "AC" },
+      { "x": 12, "y": 9 , "value": "AC" },
+      { "x": 12, "y": 10, "value": "AC" },
+      { "x": 12, "y": 11, "value": "AC" },
+      { "x": 12, "y": 13, "value": "AC" },
+      { "x": 12, "y": 14, "value": "AC" },
+      { "x": 12, "y": 15, "value": "AC" },
+      { "x": 12, "y": 16, "value": "AC" }
+    ]
+  },
+  "players": [
+    {
+      "direction": "UP",
+      "position": { "x": 6, "y": 6 },
+      "length": 3
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "gameOptions": {
+    "level": "1-1",
+    "gridHeight": 25,
+    "gridWidth": 25,
+    "fruitAmount": 1,
+    "snakeGrowth": true,
+    "obstacles": []
+  },
+  "players": [
+    {
+      "direction": "UP",
+      "position": { "x": 6, "y": 12 },
+      "length": 3
+    },
+    {
+      "direction": "UP",
+      "position": { "x": 18, "y": 12 },
+      "length": 3
+    }
+  ]
+}

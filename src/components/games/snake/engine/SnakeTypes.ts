@@ -37,6 +37,17 @@ export type SnakeGameOptions = {
     snakeGrowth: boolean;
 }
 
+export type SnakeLevelOptions = {
+    gameOptions: SnakeGameOptions;
+    players: SnakeLevelPlayerOptions[];
+}
+
+export type SnakeLevelPlayerOptions = {
+    direction: SnakeGameDirections;
+    position: GridCellLocation;
+    length: number;
+}
+
 export type SnakeLevelProgression = {
     level: string;
     completedChallenges: [boolean, boolean, boolean];
