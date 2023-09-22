@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
-import {GetLevelData, SaveLevelData} from "../engine/SnakeStorage";
-import challengesData from "../levels/challenges.json";
+import {GetLevelData} from "../engine/SnakeStorage";
+import {GetChallengesTexts} from "../levels/SnakeChallengesServer.ts";
 
 const {level, openedInfo, onOpenInfo, onCloseInfo} = defineProps<{
   level:string;
@@ -11,9 +11,7 @@ const {level, openedInfo, onOpenInfo, onCloseInfo} = defineProps<{
 }>();
 const router = useRouter();
 const levelProgression = GetLevelData(level);
-// @ts-ignore
-let challengeData: {texts: [string, string, string]} | undefined = challengesData[level];
-if (!challengeData) challengeData = {texts: ["", "", ""]};
+const challengesTexts = GetChallengesTexts(level);
 const amountOfChallengesCompleted = levelProgression.completedChallenges.filter(c => c).length;
 const difficultyClass = `difficulty-${level[0]}`;
 </script>
@@ -39,15 +37,15 @@ const difficultyClass = `difficulty-${level[0]}`;
             <div>
               <div class="level-challenge">
                 <div class="star-indicator" :class="[levelProgression.completedChallenges[0]?'star-3':'star-0']"/>
-                <p>{{challengeData.texts[0]}}</p>
+                <p>{{challengesTexts[0]}}</p>
               </div>
               <div class="level-challenge">
                 <div class="star-indicator" :class="[levelProgression.completedChallenges[1]?'star-3':'star-0']"/>
-                <p>{{challengeData.texts[1]}}</p>
+                <p>{{challengesTexts[1]}}</p>
               </div>
               <div class="level-challenge">
                 <div class="star-indicator" :class="[levelProgression.completedChallenges[2]?'star-3':'star-0']"/>
-                <p>{{challengeData.texts[2]}}</p>
+                <p>{{challengesTexts[2]}}</p>
               </div>
             </div>
           </div>
