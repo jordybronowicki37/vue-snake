@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
 import {GetLevelData, SaveLevelData} from "../engine/SnakeStorage";
+import challengesData from "../levels/challenges.json";
 
 const {level, openedInfo, onOpenInfo, onCloseInfo} = defineProps<{
   level:string;
@@ -10,13 +11,11 @@ const {level, openedInfo, onOpenInfo, onCloseInfo} = defineProps<{
 }>();
 const router = useRouter();
 const levelProgression = GetLevelData(level);
+// @ts-ignore
+let challengeData: {texts: [string, string, string]} | undefined = challengesData[level];
+if (!challengeData) challengeData = {texts: ["", "", ""]};
 const amountOfChallengesCompleted = levelProgression.completedChallenges.filter(c => c).length;
 const difficultyClass = `difficulty-${level[0]}`;
-if (level === "1-1") {
-  levelProgression.completedChallenges = [true, true, false];
-  levelProgression.highScore = 17;
-  SaveLevelData(levelProgression);
-}
 </script>
 
 <template>
@@ -40,15 +39,15 @@ if (level === "1-1") {
             <div>
               <div class="level-challenge">
                 <div class="star-indicator" :class="[levelProgression.completedChallenges[0]?'star-3':'star-0']"/>
-                <p>Eat an apple</p>
+                <p>{{challengeData.texts[0]}}</p>
               </div>
               <div class="level-challenge">
                 <div class="star-indicator" :class="[levelProgression.completedChallenges[1]?'star-3':'star-0']"/>
-                <p>Use a boost power-up</p>
+                <p>{{challengeData.texts[1]}}</p>
               </div>
               <div class="level-challenge">
                 <div class="star-indicator" :class="[levelProgression.completedChallenges[2]?'star-3':'star-0']"/>
-                <p>Reach a score of 20</p>
+                <p>{{challengeData.texts[2]}}</p>
               </div>
             </div>
           </div>
@@ -173,6 +172,6 @@ if (level === "1-1") {
 }
 .fade-enter-from,
 .fade-leave-to {
-  opacity: 20%;
+  opacity: 0;
 }
 </style>
