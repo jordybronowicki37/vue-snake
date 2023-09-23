@@ -1,11 +1,6 @@
 {
   "gameOptions": {
-    "level": "1-1",
-    "gridHeight": 25,
-    "gridWidth": 25,
-    "fruitAmount": 1,
-    "snakeGrowth": true,
-    "obstacles": []
+    "level": "1-1"
   },
   "players": [
     {

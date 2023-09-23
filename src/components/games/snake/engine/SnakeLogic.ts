@@ -15,9 +15,12 @@ export const StandardSnakeOptions: SnakeGameOptions = {
     fruitAmount: 1,
     snakeGrowth: true,
     obstacles: [],
+    initialSpeed: 400,
+    speedIncrease: 2,
 }
 
 export const StandardPlayerOptions: Omit<Omit<SnakePlayer, "snakeBody">, "queuedMoves"> = {
+    speed: 0,
     score: 0,
     gameOver: false,
     direction: "UP",
@@ -43,6 +46,7 @@ export function MoveForward(gameData: SnakeGameData, playerId: number): SnakeGam
     const hitFruit = CheckForFruit(gameData, playerId);
     if (hitFruit !== undefined) {
         player.score++;
+        player.speed = player.speed * (100 - gameData.options.speedIncrease) / 100;
         gameData.fruits = gameData.fruits.filter(v => v !== hitFruit);
         SetupNewFruitLocation(gameData);
         player.snakeBody.unshift(player.snakeBody[0]);

@@ -11,6 +11,7 @@ export type SnakePieceCell = GridCellLocation & {
 }
 
 export type SnakePlayer = {
+    speed: number;
     score: number;
     gameOver: boolean;
     queuedMoves: SnakeGameDirections[];
@@ -34,11 +35,13 @@ export type SnakeGameOptions = {
     fruitAmount: number;
     obstacles: GridCellData[];
 
+    initialSpeed: number;
+    speedIncrease: number;
     snakeGrowth: boolean;
 }
 
 export type SnakeLevelOptions = {
-    gameOptions: SnakeGameOptions;
+    gameOptions: Partial<SnakeGameOptions>;
     players: SnakeLevelPlayerOptions[];
 }
 

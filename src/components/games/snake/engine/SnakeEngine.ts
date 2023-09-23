@@ -4,7 +4,7 @@ import {GenerateLevel} from "../levels/SnakeLevelServer.ts";
 
 export class SnakeEngine {
     private timerIds: (number | undefined)[] = []
-    private score: number = 0;
+    private timerSpeeds: number[] = [];
     public gamePaused: boolean = false;
     public gameData: SnakeGameData;
 
@@ -12,6 +12,7 @@ export class SnakeEngine {
         this.gameData = GenerateLevel(level);
         for (let i = 0; i < this.gameData.players.length; i++) {
             this.timerIds.push(undefined);
+            this.timerSpeeds.push(this.gameData.players[i].speed);
         }
     }
 
@@ -47,8 +48,7 @@ export class SnakeEngine {
 
     private SetupTimer(playerId: number) {
         this.ClearTimer(playerId);
-        const newSpeed = 350 * Math.pow(0.98, this.gameData.players[playerId].score);
-        this.timerIds[playerId] = setInterval(this.NextTimeStep.bind(this, playerId), newSpeed);
+        this.timerIds[playerId] = setInterval(this.NextTimeStep.bind(this, playerId), this.gameData.players[playerId].speed);
     }
 
     private ClearTimer(playerId: number) {
@@ -71,10 +71,9 @@ export class SnakeEngine {
         if (this.gameData.gameOver) {
             this.ClearTimer(playerId);
         }
-        // TODO find a better way to detect timer speed-ups / slow-downs
-        const totalScore = this.gameData.players.map(v => v.score).reduce((a, b) => a + b, 0);
-        if (this.score !== totalScore) {
-            this.score = totalScore;
+        const player = this.gameData.players[playerId];
+        if (this.timerSpeeds[playerId] !== player.speed) {
+            this.timerSpeeds[playerId] = player.speed;
             this.ClearTimer(playerId)
             this.SetupTimer(playerId);
         }
@@ -83,7 +82,9 @@ export class SnakeEngine {
     private StartNewGame() {
         this.ClearTimers();
         this.gameData = GenerateLevel(this.gameData.options.level);
-        this.score = 0;
+        for (let i = 0; i < this.gameData.players.length; i++) {
+            this.timerSpeeds[i] = this.gameData.players[i].speed;
+        }
         this.SetupTimers();
     }
 

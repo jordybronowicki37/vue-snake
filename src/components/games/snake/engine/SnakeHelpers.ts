@@ -74,9 +74,13 @@ export function SetupGame(options: Partial<SnakeGameOptions>, players: SnakePlay
     const grid = SetupEmptyLevel(gridHeight, gridWidth, obstacles);
     const localData = GetSnakeStorage();
 
-    // Make sure the correct player index is set to the body pieces
+    // Set player values correctly
     for (let i = 0; i < players.length; i++) {
-        for (const snakeBodyElement of players[i].snakeBody) {
+        const player = players[i];
+        player.speed = completedOptions.initialSpeed;
+
+        // Make sure the correct player index is set to the body pieces
+        for (const snakeBodyElement of player.snakeBody) {
             snakeBodyElement.player = i;
         }
     }
