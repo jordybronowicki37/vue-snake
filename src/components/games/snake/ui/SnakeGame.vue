@@ -20,19 +20,19 @@ setTimeout(() => {
 
 <template>
   <div class="snake-game-container">
-    <transition name="fade" mode="out-in">
+    <transition name="overlay" mode="out-in">
       <div class="overlay" :key="showControls+''" v-if="showControls">
         <SnakeControls :players="2"/>
       </div>
     </transition>
 
-    <transition name="fade" mode="out-in">
+    <transition name="overlay" mode="out-in">
       <div class="overlay" :key="engine.gamePaused+''" v-if="engine.gamePaused">
         <SnakePause/>
       </div>
     </transition>
 
-    <transition name="fade" mode="out-in">
+    <transition name="overlay" mode="out-in">
       <div class="overlay" :key="engine.gameData.gameOver+''" v-if="engine.gameData.gameOver">
         <SnakeGameOver :game-data="engine.gameData"/>
       </div>
@@ -77,12 +77,12 @@ setTimeout(() => {
   background-color: #2226;
   backdrop-filter: blur(0.2rem);
 }
-.fade-enter-active,
-.fade-leave-active {
+.overlay-enter-active,
+.overlay-leave-active {
   transition: opacity 0.8s;
 }
-.fade-enter-from,
-.fade-leave-to {
+.overlay-enter-from,
+.overlay-leave-to {
   opacity: 0;
 }
 </style>
