@@ -6,23 +6,45 @@ import {SnakeEngine} from "../engine/SnakeEngine.ts";
 import {useRoute} from "vue-router";
 import SnakePause from "./SnakePause.vue";
 import SnakeScore from "./SnakeScore.vue";
+import SnakeControls from "./SnakeControls.vue";
 
 const route = useRoute();
 const engine = ref<SnakeEngine>(new SnakeEngine(<string>route.params.level));
-engine.value.StartEngine();
+const showControls = ref<boolean>(true);
+
+setTimeout(() => {
+  showControls.value = false;
+  engine.value.StartEngine();
+}, 1000);
 </script>
 
 <template>
   <div class="snake-game-container">
-    <SnakePause v-bind:show="engine.gamePaused"/>
-    <SnakeGameOver v-bind:game-data="engine.gameData"/>
+    <transition name="fade" mode="out-in">
+      <div class="overlay" :key="showControls+''" v-if="showControls">
+        <SnakeControls :players="2"/>
+      </div>
+    </transition>
+
+    <transition name="fade" mode="out-in">
+      <div class="overlay" :key="engine.gamePaused+''" v-if="engine.gamePaused">
+        <SnakePause/>
+      </div>
+    </transition>
+
+    <transition name="fade" mode="out-in">
+      <div class="overlay" :key="engine.gameData.gameOver+''" v-if="engine.gameData.gameOver">
+        <SnakeGameOver :game-data="engine.gameData"/>
+      </div>
+    </transition>
+
     <div class="grid-wrapper">
-      <SnakeScore v-bind:game-data="engine.gameData"/>
+      <SnakeScore :game-data="engine.gameData"/>
       <Grid
-          v-bind:data="engine.gameData.grid"
-          v-bind:cellStyles="engine.gameData.assetStyles"
-          v-bind:height="engine.gameData.options.gridHeight"
-          v-bind:width="engine.gameData.options.gridWidth"/>
+          :data="engine.gameData.grid"
+          :cellStyles="engine.gameData.assetStyles"
+          :height="engine.gameData.options.gridHeight"
+          :width="engine.gameData.options.gridWidth"/>
     </div>
   </div>
 </template>
@@ -41,5 +63,26 @@ engine.value.StartEngine();
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+}
+.overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  color: #ffff;
+  background-color: #2226;
+  backdrop-filter: blur(0.2rem);
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.8s;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

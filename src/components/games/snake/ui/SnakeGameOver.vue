@@ -24,7 +24,7 @@
 </script>
 
 <template>
-  <div v-if="gameData.gameOver" class="game-over-screen">
+  <div class="game-over-screen">
     <div v-if="gameData.players.length === 1">
       <h3 class="game-over-text">
         Game-over
@@ -58,17 +58,6 @@
 <style scoped>
 .game-over-screen {
   user-select: none;
-  position: absolute;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background-color: #2226;
-  color: #ffff;
-  backdrop-filter: blur(0.2rem);
-  animation: showGameOver 1s;
 }
 
 .game-over-screen>div {
@@ -77,19 +66,6 @@
   justify-content: center;
   align-items: center;
   gap: 2rem;
-}
-
-@keyframes showGameOver {
-  from {
-    color: #fff0;
-    background-color: #2220;
-    backdrop-filter: blur(0);
-  }
-  to {
-    color: #ffff;
-    background-color: #2226;
-    backdrop-filter: blur(0.2rem);
-  }
 }
 
 .game-over-text {
