@@ -5,7 +5,7 @@ import SnakeControls from "./SnakeControls.vue";
 <template>
     <div class="pause-screen">
       <h2>Game paused!</h2>
-      <SnakeControls players="2"/>
+      <SnakeControls :players="2"/>
     </div>
 </template>
 
