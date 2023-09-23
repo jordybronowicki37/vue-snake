@@ -7,10 +7,21 @@ import {useRoute} from "vue-router";
 import SnakePause from "./SnakePause.vue";
 import SnakeScore from "./SnakeScore.vue";
 import SnakeControls from "./SnakeControls.vue";
+import SnakeLevelChallenges from "./SnakeLevelChallenges.vue";
+import {GetLevelData} from "../engine/SnakeStorage.ts";
+import {GetChallengesTexts} from "../levels/SnakeChallengesServer.ts";
 
 const route = useRoute();
-const engine = ref<SnakeEngine>(new SnakeEngine(<string>route.params.level));
+const level = <string>route.params.level;
+const engine = ref<SnakeEngine>(new SnakeEngine(level));
 const showControls = ref<boolean>(true);
+
+const levelProgression = GetLevelData(level);
+const challengesTexts = GetChallengesTexts(level);
+const challengesData: { text: string, completed: boolean }[] = [];
+for (let i = 0; i < challengesTexts.length; i++) {
+  challengesData.push({text: challengesTexts[i], completed: levelProgression.completedChallenges[i]});
+}
 
 setTimeout(() => {
   showControls.value = false;
@@ -39,12 +50,19 @@ setTimeout(() => {
     </transition>
 
     <div class="grid-wrapper">
-      <SnakeScore :game-data="engine.gameData"/>
-      <Grid
-          :data="engine.gameData.grid"
-          :cellStyles="engine.gameData.assetStyles"
-          :height="engine.gameData.options.gridHeight"
-          :width="engine.gameData.options.gridWidth"/>
+      <div class="game-wrapper">
+        <div class="top-bar">
+          <div v-if="!['versus', 'battle'].includes(level)">
+            <SnakeLevelChallenges :challenges="challengesData"/>
+          </div>
+          <SnakeScore :game-data="engine.gameData"/>
+        </div>
+        <Grid
+            :data="engine.gameData.grid"
+            :cellStyles="engine.gameData.assetStyles"
+            :height="engine.gameData.options.gridHeight"
+            :width="engine.gameData.options.gridWidth"/>
+      </div>
     </div>
   </div>
 </template>
@@ -63,6 +81,17 @@ setTimeout(() => {
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+}
+.game-wrapper {
+  padding: 0.2rem;
+  border-radius: 1rem 1rem 0 0;
+  background-color: #333;
+  overflow: hidden;
+}
+.top-bar {
+  display: flex;
+  align-content: center;
+  padding: 0.5rem;
 }
 .overlay {
   display: flex;

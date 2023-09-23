@@ -3,7 +3,7 @@ import {SnakeGameData} from "../engine/SnakeTypes";
 import {GetLevelData} from "../engine/SnakeStorage.ts";
 const {gameData} = defineProps<{ gameData: SnakeGameData }>();
 const difficultyClass = `difficulty-${gameData.options.level[0]}`;
-const highScore = GetLevelData(gameData.options.level).highScore;
+const levelData = GetLevelData(gameData.options.level);
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const highScore = GetLevelData(gameData.options.level).highScore;
       </h3>
       <div class="score-line">
         <div>Highscore:</div>
-        <div>{{highScore > gameData.players[0].score ? highScore:gameData.players[0].score }}</div>
+        <div>{{levelData.highScore > gameData.players[0].score ? levelData.highScore : gameData.players[0].score }}</div>
       </div>
       <div class="score-line">
         <div>Score:</div>
@@ -41,11 +41,13 @@ const highScore = GetLevelData(gameData.options.level).highScore;
   width: 100%;
 }
 
-.solo-game-score-container,
+.solo-game-score-container {
+  display: flex;
+  justify-content: flex-end;
+}
 .multiplayer-game-score-container {
   display: flex;
-  justify-content: center;
-  gap: 10rem;
+  justify-content: space-between;
 }
 
 .level-line,

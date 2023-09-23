@@ -2,6 +2,7 @@
 import {useRouter} from "vue-router";
 import {GetLevelData} from "../engine/SnakeStorage";
 import {GetChallengesTexts} from "../levels/SnakeChallengesServer.ts";
+import SnakeLevelChallenges from "./SnakeLevelChallenges.vue";
 
 const {level, openedInfo, onOpenInfo, onCloseInfo} = defineProps<{
   level:string;
@@ -14,12 +15,16 @@ const levelProgression = GetLevelData(level);
 const challengesTexts = GetChallengesTexts(level);
 const amountOfChallengesCompleted = levelProgression.completedChallenges.filter(c => c).length;
 const difficultyClass = `difficulty-${level[0]}`;
+const challengesData: { text: string, completed: boolean }[] = [];
+for (let i = 0; i < challengesTexts.length; i++) {
+  challengesData.push({text: challengesTexts[i], completed: levelProgression.completedChallenges[i]})
+}
 </script>
 
 <template>
   <div class="level-tile-container" :class="difficultyClass">
     <div class="level-tile">
-      <div class="star-indicator floating-star-indicator" v-bind:class="[`star-${amountOfChallengesCompleted}`]"/>
+      <div class="star-indicator" v-bind:class="[`star-${amountOfChallengesCompleted}`]"/>
       <button type="button" v-on:click="() => openedInfo ? onCloseInfo() : onOpenInfo(level)">{{level}}</button>
     </div>
     <transition name="fade" mode="out-in">
@@ -32,23 +37,7 @@ const difficultyClass = `difficulty-${level[0]}`;
               <p>{{levelProgression.highScore}}</p>
             </div>
           </div>
-          <div class="level-challenges">
-            <h3>Level challenges</h3>
-            <div>
-              <div class="level-challenge">
-                <div class="star-indicator" :class="[levelProgression.completedChallenges[0]?'star-3':'star-0']"/>
-                <p>{{challengesTexts[0]}}</p>
-              </div>
-              <div class="level-challenge">
-                <div class="star-indicator" :class="[levelProgression.completedChallenges[1]?'star-3':'star-0']"/>
-                <p>{{challengesTexts[1]}}</p>
-              </div>
-              <div class="level-challenge">
-                <div class="star-indicator" :class="[levelProgression.completedChallenges[2]?'star-3':'star-0']"/>
-                <p>{{challengesTexts[2]}}</p>
-              </div>
-            </div>
-          </div>
+          <SnakeLevelChallenges :challenges="challengesData"/>
           <button class="start-level-button" type="button" v-on:click="router.push(`/game/${level}`)">Start level ⮞</button>
         </div>
       </div>
@@ -125,14 +114,6 @@ const difficultyClass = `difficulty-${level[0]}`;
   left: 0;
   box-shadow: -10px 10px 0 0 var(--difficulty-color);
 }
-.level-challenges>h3 {
-  margin: 0;
-}
-.level-challenge {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
 .start-level-button {
   background-color: transparent;
   padding: 0.2rem 0.5rem;
@@ -141,16 +122,14 @@ const difficultyClass = `difficulty-${level[0]}`;
   border-radius: 1rem;
   cursor: pointer;
 }
-.floating-star-indicator {
-  top: 5px;
-  right: 5px;
-  position: absolute;
-}
 .star-indicator {
   width: 15px;
   height: 15px;
   background-repeat: no-repeat;
   background-size: cover;
+  top: 5px;
+  right: 5px;
+  position: absolute;
 }
 .star-0 {
   background-image: url("src/assets/stars/StarNone.png");
