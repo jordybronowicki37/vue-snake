@@ -132,16 +132,16 @@ for (let i = 0; i < challengesTexts.length; i++) {
   position: absolute;
 }
 .star-0 {
-  background-image: url("src/assets/stars/StarNone.png");
+  background-image: url("/public/assets/stars/StarNone.png");
 }
 .star-1 {
-  background-image: url("src/assets/stars/StarBronze.png");
+  background-image: url("/public/assets/stars/StarBronze.png");
 }
 .star-2 {
-  background-image: url("src/assets/stars/StarSilver.png");
+  background-image: url("/public/assets/stars/StarSilver.png");
 }
 .star-3 {
-  background-image: url("src/assets/stars/StarGold.png");
+  background-image: url("/public/assets/stars/StarGold.png");
 }
 .fade-enter-active,
 .fade-leave-active {

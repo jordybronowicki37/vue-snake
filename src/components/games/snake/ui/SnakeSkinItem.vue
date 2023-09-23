@@ -17,9 +17,9 @@ withDefaults(
          v-on:click="onSelect(type)"
          v-bind:class="[selectedSnake===type&&'selected', canSelect&&'can-select']">
       <div class="body-pieces">
-        <div class="body-piece" v-bind:style="{backgroundImage: `url(src/assets/snakes/${type}/Snake${type}Head.png)`}"/>
-        <div class="body-piece" v-bind:style="{backgroundImage: `url(src/assets/snakes/${type}/Snake${type}Straight.png)`}"/>
-        <div class="body-piece" v-bind:style="{backgroundImage: `url(src/assets/snakes/${type}/Snake${type}Tail.png)`}"/>
+        <div class="body-piece" v-bind:style="{backgroundImage: `url(public/assets/snakes/${type}/Snake${type}Head.png)`}"/>
+        <div class="body-piece" v-bind:style="{backgroundImage: `url(public/assets/snakes/${type}/Snake${type}Straight.png)`}"/>
+        <div class="body-piece" v-bind:style="{backgroundImage: `url(public/assets/snakes/${type}/Snake${type}Tail.png)`}"/>
       </div>
     </div>
     <p class="skin-name">{{type}}</p>

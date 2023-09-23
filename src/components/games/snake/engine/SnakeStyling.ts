@@ -15,8 +15,8 @@ export function SnakeGameCellStyles(
             outlineWidth: "1px",
             outlineColor,
         },
-        "F": GetImageStyling("url(src/assets/objects/Fruit.png)", backgroundColor, outlineColor),
-        "AC": GetImageStyling("url(src/assets/objects/Crate.png)", backgroundColor, outlineColor),
+        "F": GetImageStyling("url(public/assets/objects/Fruit.png)", backgroundColor, outlineColor),
+        "AC": GetImageStyling("url(public/assets/objects/Crate.png)", backgroundColor, outlineColor),
         ...GenerateAssetsList(selectedSnakeStyles, backgroundColor, outlineColor),
     }
 }
@@ -33,7 +33,7 @@ function GenerateAssetsList(
         for (const pieceType of AllSnakePieceTypes) {
             for (const direction of AllSnakeDirections) {
                 const capPieceType = pieceType[0].toUpperCase() + pieceType.slice(1).toLowerCase();
-                styles[GenerateTypeIndex({player:i, direction}, pieceType)] = GetImageStyling(`url(src/assets/snakes/${color}/Snake${color}${capPieceType}.png)`, backgroundColor, outlineColor, direction);
+                styles[GenerateTypeIndex({player:i, direction}, pieceType)] = GetImageStyling(`url(public/assets/snakes/${color}/Snake${color}${capPieceType}.png)`, backgroundColor, outlineColor, direction);
             }
         }
     }

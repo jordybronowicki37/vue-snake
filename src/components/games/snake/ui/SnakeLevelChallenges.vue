@@ -34,9 +34,9 @@ defineProps<{ challenges: { text: string, completed: boolean }[] }>()
   background-size: cover;
 }
 .star-0 {
-  background-image: url("src/assets/stars/StarNone.png");
+  background-image: url("/public/assets/stars/StarNone.png");
 }
 .star-3 {
-  background-image: url("src/assets/stars/StarGold.png");
+  background-image: url("/public/assets/stars/StarGold.png");
 }
 </style>
