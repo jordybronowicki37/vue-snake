@@ -80,6 +80,7 @@ export class SnakeEngine {
     }
 
     private StartNewGame() {
+        this.gamePaused = false;
         this.ClearTimers();
         this.gameData = GenerateLevel(this.gameData.options.level);
         for (let i = 0; i < this.gameData.players.length; i++) {
