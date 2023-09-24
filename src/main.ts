@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import './style.css'
+import './assets.css'
 import App from './App.vue'
 import {createRouter, createWebHashHistory, RouteRecordRaw} from "vue-router";
 import SnakeHome from "./components/games/snake/ui/SnakeHome.vue";

@@ -33,10 +33,4 @@ defineProps<{ challenges: { text: string, completed: boolean }[] }>()
   background-repeat: no-repeat;
   background-size: cover;
 }
-.star-0 {
-  background-image: url("/public/assets/stars/StarNone.png");
-}
-.star-3 {
-  background-image: url("/public/assets/stars/StarGold.png");
-}
 </style>

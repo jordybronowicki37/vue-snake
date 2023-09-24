@@ -131,18 +131,6 @@ for (let i = 0; i < challengesTexts.length; i++) {
   right: 5px;
   position: absolute;
 }
-.star-0 {
-  background-image: url("/public/assets/stars/StarNone.png");
-}
-.star-1 {
-  background-image: url("/public/assets/stars/StarBronze.png");
-}
-.star-2 {
-  background-image: url("/public/assets/stars/StarSilver.png");
-}
-.star-3 {
-  background-image: url("/public/assets/stars/StarGold.png");
-}
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s;

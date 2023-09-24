@@ -1,0 +1,36 @@
+:root {
+    /* Objects */
+    --object-crate: url("/assets/objects/Crate.png");
+    --object-fruit: url("/assets/objects/Fruit.png");
+
+    /* Stars */
+    --star-0: url("/assets/stars/StarNone.png");
+    --star-1: url("/assets/stars/StarBronze.png");
+    --star-2: url("/assets/stars/StarSilver.png");
+    --star-3: url("/assets/stars/StarGold.png");
+
+    /* Green snake */
+    --snake-green-head: url("/assets/snakes/Green/SnakeGreenHead.png");
+    --snake-green-straight: url("/assets/snakes/Green/SnakeGreenStraight.png");
+    --snake-green-curve: url("/assets/snakes/Green/SnakeGreenCurve.png");
+    --snake-green-tail: url("/assets/snakes/Green/SnakeGreenTail.png");
+
+    /* Blue snake */
+    --snake-blue-head: url("/assets/snakes/Blue/SnakeBlueHead.png");
+    --snake-blue-straight: url("/assets/snakes/Blue/SnakeBlueStraight.png");
+    --snake-blue-curve: url("/assets/snakes/Blue/SnakeBlueCurve.png");
+    --snake-blue-tail: url("/assets/snakes/Blue/SnakeBlueTail.png");
+}
+
+.star-0 {
+    background-image: var(--star-0);
+}
+.star-1 {
+    background-image: var(--star-1);
+}
+.star-2 {
+    background-image: var(--star-2);
+}
+.star-3 {
+    background-image: var(--star-3);
+}
