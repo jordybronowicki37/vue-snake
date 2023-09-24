@@ -69,11 +69,11 @@ setTimeout(() => {
 
 <style scoped>
 .snake-game-container {
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 100vh;
 }
 .grid-wrapper {
   display: flex;

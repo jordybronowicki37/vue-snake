@@ -11,6 +11,7 @@ export function SnakeGameCellStyles(
     return {
         ".": {
             backgroundColor,
+            transform: "rotate(0deg)",
             outlineStyle: "solid",
             outlineWidth: "1px",
             outlineColor,

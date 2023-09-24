@@ -5,11 +5,9 @@ defineProps<{ data: GridData, cellStyles: CellStyles, height: number, width: num
 </script>
 
 <template>
-  <table>
-    <tr v-for="i in data" class="grid-row">
-      <td v-for="j in i" class="grid-cell" v-bind:style="cellStyles[j]"></td>
-    </tr>
-  </table>
+  <div v-for="i in data" class="grid-row">
+    <div v-for="j in i" class="grid-cell" v-bind:style="cellStyles[j]"></div>
+  </div>
 </template>
 
 <style scoped>
