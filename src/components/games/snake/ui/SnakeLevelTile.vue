@@ -7,6 +7,7 @@ import SnakeLevelChallenges from "./SnakeLevelChallenges.vue";
 const {level} = defineProps<{
   level: string;
   locked: boolean;
+  moreStarsRequired: number;
   openedInfo: boolean;
   onOpenInfo: (level: string) => void;
   onCloseInfo: () => void;
@@ -27,9 +28,9 @@ for (let i = 0; i < challengesTexts.length; i++) {
     <div class="level-tile">
       <div class="star-indicator" v-bind:class="[`star-${amountOfChallengesCompleted}`]"/>
       <button type="button" v-on:click="() => openedInfo ? onCloseInfo() : onOpenInfo(level)">{{level}}</button>
-      <div class="locked" v-if="locked">Locked</div>
+      <div class="locked" v-if="locked" v-on:click="() => openedInfo ? onCloseInfo() : onOpenInfo(level)">Locked</div>
     </div>
-    <transition name="fade" mode="out-in">
+    <transition name="fade" mode="out-in" v-if="!locked">
       <div :key="openedInfo+''" class="level-info" v-if="openedInfo">
         <div class="level-info-content-container">
           <div class="inverted-corners"><div/><div/></div>
@@ -41,6 +42,17 @@ for (let i = 0; i < challengesTexts.length; i++) {
           </div>
           <SnakeLevelChallenges :challenges="challengesData"/>
           <button class="start-level-button" type="button" v-on:click="router.push(`/game/${level}`)">Start level ⮞</button>
+        </div>
+      </div>
+    </transition>
+    <transition name="fade" mode="out-in" v-if="locked">
+      <div :key="openedInfo+''" class="level-info" v-if="openedInfo">
+        <div class="level-info-content-container">
+          <div class="inverted-corners"><div/><div/></div>
+          <p class="stars-required">
+            <span>More stars required: </span>
+            <span>{{moreStarsRequired}}</span>
+          </p>
         </div>
       </div>
     </transition>
@@ -74,9 +86,17 @@ for (let i = 0; i < challengesTexts.length; i++) {
   justify-content: center;
   align-items: center;
   border-radius: 1rem;
-  background-color: #3337;
+  background-color: #333c;
   backdrop-filter: blur(0.1rem);
   user-select: none;
+  cursor: pointer;
+  font-weight: 300;
+}
+.stars-required {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  font-weight: 600;
 }
 .level-info {
   position: absolute;

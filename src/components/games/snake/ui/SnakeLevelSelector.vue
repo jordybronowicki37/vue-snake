@@ -6,8 +6,10 @@ import {GetSnakeStorage} from "../engine/SnakeStorage.ts";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
-const selectedSkin = ref<string>(GetSnakeStorage().snakeSkins[0]);
 const selectedLevel = ref<string>("");
+const storage = GetSnakeStorage();
+const selectedSkin = storage.snakeSkins[0];
+const totalStars = Object.values(storage.soloProgression).flatMap(v => v.completedChallenges.filter(v => v)).length;
 
 function onOpenInfo(level: string): void {
   selectedLevel.value = level;
@@ -16,7 +18,18 @@ function onCloseInfo(): void {
   selectedLevel.value = "";
 }
 function checkLocked(level: string): boolean {
-  return !["1-1", "1-2"].includes(level);
+  if(["1-1", "1-2"].includes(level)) return false;
+  const worldNum = Number(level[0])-1;
+  const levelNum = Number(level[2]);
+  const levelIndex = (worldNum * 5) + levelNum;
+  return (levelIndex * 2) - 2 > totalStars;
+}
+function moreStarsRequired(level: string): number {
+  const worldNum = Number(level[0])-1;
+  const levelNum = Number(level[2]);
+  const levelIndex = (worldNum * 5) + levelNum;
+  const amountRequired = (levelIndex * 2) - 2 - totalStars
+  return amountRequired < 0 ? 0 : amountRequired;
 }
 </script>
 
@@ -37,6 +50,7 @@ function checkLocked(level: string): boolean {
             v-for="levelIndex in 5"
             :level="`${worldIndex+1}-${levelIndex}`"
             :locked="checkLocked(`${worldIndex+1}-${levelIndex}`)"
+            :more-stars-required="moreStarsRequired(`${worldIndex+1}-${levelIndex}`)"
             :opened-info="selectedLevel===`${worldIndex+1}-${levelIndex}`"
             :on-open-info="onOpenInfo"
             :on-close-info="onCloseInfo"/>
