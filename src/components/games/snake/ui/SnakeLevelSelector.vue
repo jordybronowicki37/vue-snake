@@ -9,11 +9,14 @@ const router = useRouter();
 const selectedSkin = ref<string>(GetSnakeStorage().snakeSkins[0]);
 const selectedLevel = ref<string>("");
 
-function onOpenInfo(level: string) {
+function onOpenInfo(level: string): void {
   selectedLevel.value = level;
 }
-function onCloseInfo() {
+function onCloseInfo(): void {
   selectedLevel.value = "";
+}
+function checkLocked(level: string): boolean {
+  return !["1-1", "1-2"].includes(level);
 }
 </script>
 
@@ -27,44 +30,16 @@ function onCloseInfo() {
   </div>
   <div class="worlds-container">
     <h1>Select a level</h1>
-    <div class="world-container world-1">
-      <h2>World 1 - Easy</h2>
+    <div class="world-container" v-for="(worldDifficulty, worldIndex) in ['Easy', 'Medium', 'Hard', 'Expert']">
+      <h2>World {{worldIndex+1}} - {{worldDifficulty}}</h2>
       <div>
-        <SnakeLevelTile level="1-1" :locked="false" :opened-info="selectedLevel==='1-1'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="1-2" :locked="false" :opened-info="selectedLevel==='1-2'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="1-3" :locked="true" :opened-info="selectedLevel==='1-3'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="1-4" :locked="true" :opened-info="selectedLevel==='1-4'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="1-5" :locked="true" :opened-info="selectedLevel==='1-5'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-      </div>
-    </div>
-    <div class="world-container world-2">
-      <h2>World 2 - Medium</h2>
-      <div>
-        <SnakeLevelTile level="2-1" :locked="true" :opened-info="selectedLevel==='2-1'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="2-2" :locked="true" :opened-info="selectedLevel==='2-2'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="2-3" :locked="true" :opened-info="selectedLevel==='2-3'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="2-4" :locked="true" :opened-info="selectedLevel==='2-4'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="2-5" :locked="true" :opened-info="selectedLevel==='2-5'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-      </div>
-    </div>
-    <div class="world-container world-3">
-      <h2>World 3 - Hard</h2>
-      <div>
-        <SnakeLevelTile level="3-1" :locked="true" :opened-info="selectedLevel==='3-1'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="3-2" :locked="true" :opened-info="selectedLevel==='3-2'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="3-3" :locked="true" :opened-info="selectedLevel==='3-3'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="3-4" :locked="true" :opened-info="selectedLevel==='3-4'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="3-5" :locked="true" :opened-info="selectedLevel==='3-5'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-      </div>
-    </div>
-    <div class="world-container world-4">
-      <h2>World 4 - Expert</h2>
-      <div>
-        <SnakeLevelTile level="4-1" :locked="true" :opened-info="selectedLevel==='4-1'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="4-2" :locked="true" :opened-info="selectedLevel==='4-2'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="4-3" :locked="true" :opened-info="selectedLevel==='4-3'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="4-4" :locked="true" :opened-info="selectedLevel==='4-4'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
-        <SnakeLevelTile level="4-5" :locked="true" :opened-info="selectedLevel==='4-5'" :on-open-info="onOpenInfo" :on-close-info="onCloseInfo"/>
+        <SnakeLevelTile
+            v-for="levelIndex in 5"
+            :level="`${worldIndex+1}-${levelIndex}`"
+            :locked="checkLocked(`${worldIndex+1}-${levelIndex}`)"
+            :opened-info="selectedLevel===`${worldIndex+1}-${levelIndex}`"
+            :on-open-info="onOpenInfo"
+            :on-close-info="onCloseInfo"/>
       </div>
     </div>
   </div>
