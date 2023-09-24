@@ -29,9 +29,9 @@ function checkLocked(level: string): boolean {
     </div>
   </div>
   <div class="worlds-container">
-    <h1>Select a level</h1>
+    <h2>Select a level</h2>
     <div class="world-container" v-for="(worldDifficulty, worldIndex) in ['Easy', 'Medium', 'Hard', 'Expert']">
-      <h2>World {{worldIndex+1}} - {{worldDifficulty}}</h2>
+      <h3>World {{worldIndex+1}} - {{worldDifficulty}}</h3>
       <div>
         <SnakeLevelTile
             v-for="levelIndex in 5"
@@ -59,15 +59,15 @@ function checkLocked(level: string): boolean {
   display: flex;
   flex-direction: column;
   gap: 4rem;
+  padding-bottom: 20rem;
 }
-.worlds-container>h1 {
+.worlds-container>h2 {
   margin: 0;
-  padding: 4rem 0 4rem 0;
+  padding-top: 4rem;
   text-align: center;
   font-size: 50px;
 }
-
-.world-container>h2 {
+.world-container>h3 {
   margin: 0;
   text-align: center;
 }
