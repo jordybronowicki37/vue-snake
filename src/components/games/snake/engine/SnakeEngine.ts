@@ -92,7 +92,7 @@ export class SnakeEngine {
     private HandleUserInteractions(e: KeyboardEvent) {
         const secondaryControlToPlayer = this.gameData.players.length-1;
         switch (e.key) {
-            case "Backspace":
+            case "Escape":
                 if (this.gamePaused) this.ContinueEngine();
                 else this.PauseEngine();
                 break;

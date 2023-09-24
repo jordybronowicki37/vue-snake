@@ -33,13 +33,13 @@ setTimeout(() => {
   <div class="snake-game-container">
     <transition name="overlay" mode="out-in">
       <div class="overlay" :key="showControls+''" v-if="showControls">
-        <SnakeControls :players="2"/>
+        <SnakeControls :players="engine.gameData.players.length"/>
       </div>
     </transition>
 
     <transition name="overlay" mode="out-in">
       <div class="overlay" :key="engine.gamePaused+''" v-if="engine.gamePaused">
-        <SnakePause/>
+        <SnakePause :players="engine.gameData.players.length"/>
       </div>
     </transition>
 

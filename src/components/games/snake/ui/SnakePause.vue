@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import SnakeControls from "./SnakeControls.vue";
+
+defineProps<{ players: number; }>()
 </script>
 
 <template>
     <div class="pause-screen">
       <h2>Game paused!</h2>
-      <SnakeControls :players="2"/>
+      <SnakeControls :players="players"/>
     </div>
 </template>
 
