@@ -7,6 +7,7 @@ import {
     SnakeGameOptions
 } from "./SnakeTypes";
 import {GenerateTypeIndex, GetNextPosition, InsertValueIntoGrid} from "./SnakeHelpers.ts";
+import {SaveLevelData} from "./SnakeStorage.ts";
 
 export const StandardSnakeOptions: SnakeGameOptions = {
     level: "1-1",
@@ -50,6 +51,11 @@ export function MoveForward(gameData: SnakeGameData, playerId: number): SnakeGam
         gameData.fruits = gameData.fruits.filter(v => v !== hitFruit);
         SetupNewFruitLocation(gameData);
         player.snakeBody.unshift(player.snakeBody[0]);
+
+        if (gameData.progression !== undefined && gameData.progression.highScore < player.score) {
+            gameData.progression.highScore = player.score;
+            SaveLevelData(gameData.progression);
+        }
     }
 
     // Remove old tail

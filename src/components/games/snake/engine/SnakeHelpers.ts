@@ -13,7 +13,7 @@ import {
     StandardSnakeOptions
 } from "./SnakeLogic.ts";
 import {SnakeGameCellStyles} from "./SnakeStyling.ts";
-import {GetSnakeStorage} from "./SnakeStorage.ts";
+import {GetLevelData, GetSnakeStorage} from "./SnakeStorage.ts";
 
 export function SetupEmptyLevel(height: number, width: number, staticObstacles: GridCellData[]): GridData {
     const grid: GridData = [];
@@ -70,9 +70,11 @@ export function SetupGameFromLevelOptions(options: SnakeLevelOptions): SnakeGame
 
 export function SetupGame(options: Partial<SnakeGameOptions>, players: SnakePlayer[]): SnakeGameData {
     const completedOptions: SnakeGameOptions = {...StandardSnakeOptions, ...options}
-    const { gridHeight, gridWidth, fruitAmount, obstacles } = completedOptions;
+    const { gridHeight, gridWidth, fruitAmount, obstacles, level } = completedOptions;
     const grid = SetupEmptyLevel(gridHeight, gridWidth, obstacles);
+    const isSinglePlayerGame = !["battle", "versus"].includes(level);
     const localData = GetSnakeStorage();
+    const progression = isSinglePlayerGame ? GetLevelData(level) : undefined;
 
     // Set player values correctly
     for (let i = 0; i < players.length; i++) {
@@ -87,6 +89,7 @@ export function SetupGame(options: Partial<SnakeGameOptions>, players: SnakePlay
 
     // Setup initial data
     const gameData: SnakeGameData = {
+        progression,
         assetStyles: SnakeGameCellStyles(localData.snakeSkins),
         options: completedOptions,
         gameOver: false,

@@ -20,6 +20,7 @@ export type SnakePlayer = {
 }
 
 export type SnakeGameData = {
+    progression: SnakeLevelProgression | undefined;
     options: SnakeGameOptions;
     assetStyles: CellStyles;
     grid: GridData;
