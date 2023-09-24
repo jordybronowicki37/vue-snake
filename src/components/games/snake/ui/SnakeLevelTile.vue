@@ -4,8 +4,9 @@ import {GetLevelData} from "../engine/SnakeStorage";
 import {GetChallengesTexts} from "../levels/SnakeChallengesServer.ts";
 import SnakeLevelChallenges from "./SnakeLevelChallenges.vue";
 
-const {level, openedInfo, onOpenInfo, onCloseInfo} = defineProps<{
-  level:string;
+const {level} = defineProps<{
+  level: string;
+  locked: boolean;
   openedInfo: boolean;
   onOpenInfo: (level: string) => void;
   onCloseInfo: () => void;
@@ -26,9 +27,10 @@ for (let i = 0; i < challengesTexts.length; i++) {
     <div class="level-tile">
       <div class="star-indicator" v-bind:class="[`star-${amountOfChallengesCompleted}`]"/>
       <button type="button" v-on:click="() => openedInfo ? onCloseInfo() : onOpenInfo(level)">{{level}}</button>
+      <div class="locked" v-if="locked">Locked</div>
     </div>
     <transition name="fade" mode="out-in">
-      <div :key="openedInfo+''" class="level-info" :hidden="!openedInfo">
+      <div :key="openedInfo+''" class="level-info" v-if="openedInfo">
         <div class="level-info-content-container">
           <div class="inverted-corners"><div/><div/></div>
           <div class="personal-stats">
@@ -61,6 +63,20 @@ for (let i = 0; i < challengesTexts.length; i++) {
   border-radius: 1rem;
   cursor: pointer;
   background-color: var(--difficulty-color);
+}
+.locked {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  background-color: #3337;
+  backdrop-filter: blur(0.1rem);
+  user-select: none;
 }
 .level-info {
   position: absolute;
