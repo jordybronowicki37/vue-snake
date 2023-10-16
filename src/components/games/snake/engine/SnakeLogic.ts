@@ -114,15 +114,13 @@ export function CheckForObstacle(gameData: SnakeGameData, playerIndex: number): 
     const snakeHead = snakeBody[snakeBody.length-1];
     const position = GetNextPosition(gridWidth, gridHeight, snakeHead, direction);
     const positionContent = grid[position.y][position.x];
-
-    // FIXME: When a snakes eats a fruit the tail does not retract. A different snakes can hit this tail and would not die.
     return positionContent !== "." && positionContent !== "F" && positionContent.slice(0, 2) !== "ST";
 }
 
 export function CheckForFruit(gameData: SnakeGameData, playerIndex: number): GridCellLocation | undefined {
-    const player = gameData.players[playerIndex];
+    const { players, fruits, options: { gridHeight, gridWidth } } = gameData;
+    const player = players[playerIndex];
     const { direction, snakeBody } = player;
-    const { fruits, options: { gridHeight, gridWidth } } = gameData;
     const snakeHead = snakeBody[snakeBody.length-1];
     const nextPosition = GetNextPosition(gridWidth, gridHeight, snakeHead, direction);
     return fruits.find(fruit => nextPosition.x === fruit.x && nextPosition.y === fruit.y);
@@ -132,9 +130,8 @@ export function CheckForGameOver(gameData: SnakeGameData): boolean {
     let amountStillPlaying = gameData.players.map(p => p.gameOver).filter(v => !v).length;
 
     // Single player mode
-    if (gameData.players.length === 1) {
-        return amountStillPlaying === 0;
-    }
+    if (gameData.players.length === 1) return amountStillPlaying === 0;
+
     // Versus mode
     return amountStillPlaying === 1;
 }
