@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{ challenges: { text: string, completed: boolean }[] }>()
+import {SnakeLevelChallengePreview} from "../engine/SnakeTypes.ts";
+
+defineProps<{ challenges: SnakeLevelChallengePreview[] }>()
 </script>
 
 <template>
@@ -8,7 +10,7 @@ defineProps<{ challenges: { text: string, completed: boolean }[] }>()
     <div>
       <div class="level-challenge" v-for="challenge in challenges">
         <div class="star-indicator" :class="[challenge.completed?'star-3':'star-0']"/>
-        <p>{{challenge.text}}</p>
+        <p>{{challenge.title}}</p>
       </div>
     </div>
   </div>

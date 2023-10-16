@@ -1,0 +1,36 @@
+{
+  "1-1": [
+    {
+      "title": "Eat an apple",
+      "type": "checkScore",
+      "data": 1
+    },
+    {
+      "title": "Use a boost power-up",
+      "type": "checkConsumable",
+      "data": "power-up"
+    },
+    {
+      "title": "Reach a score of 20",
+      "type": "checkScore",
+      "data": 20
+    }
+  ],
+  "1-2": [
+    {
+      "title": "Eat an banana",
+      "type": "checkScore",
+      "data": 1
+    },
+    {
+      "title": "Use a boost power-up",
+      "type": "checkConsumable",
+      "data": "power-up"
+    },
+    {
+      "title": "Reach a score of 25",
+      "type": "checkScore",
+      "data": 25
+    }
+  ]
+}

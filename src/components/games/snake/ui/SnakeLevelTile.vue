@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
 import {GetLevelData} from "../engine/SnakeStorage";
-import {GetChallengesTexts} from "../levels/SnakeChallengesServer.ts";
+import {GetChallengesData} from "../levels/SnakeChallengesProvider.ts";
 import SnakeLevelChallenges from "./SnakeLevelChallenges.vue";
+import {SnakeLevelChallengePreview} from "../engine/SnakeTypes.ts";
 
 const {level} = defineProps<{
   level: string;
@@ -14,13 +15,17 @@ const {level} = defineProps<{
 }>();
 const router = useRouter();
 const levelProgression = GetLevelData(level);
-const challengesTexts = GetChallengesTexts(level);
 const amountOfChallengesCompleted = levelProgression.completedChallenges.filter(c => c).length;
 const difficultyClass = `difficulty-${level[0]}`;
-const challengesData: { text: string, completed: boolean }[] = [];
-for (let i = 0; i < challengesTexts.length; i++) {
-  challengesData.push({text: challengesTexts[i], completed: levelProgression.completedChallenges[i]})
+
+const challengesRawData = GetChallengesData(level);
+const challengesData: SnakeLevelChallengePreview[] = [];
+if (challengesRawData !== undefined) {
+  for (let i = 0; i < challengesRawData.length; i++) {
+    challengesData.push({title: challengesRawData[i].title, completed: levelProgression.completedChallenges[i]})
+  }
 }
+
 </script>
 
 <template>

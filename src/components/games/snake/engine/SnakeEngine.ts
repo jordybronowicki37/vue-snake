@@ -1,6 +1,6 @@
 import {SnakeGameData} from "./SnakeTypes";
 import {ChangeDirection, MoveForward} from "./SnakeLogic";
-import {GenerateLevel} from "../levels/SnakeLevelServer.ts";
+import {GenerateLevel} from "../levels/SnakeLevelProvider.ts";
 
 export class SnakeEngine {
     private timerIds: (number | undefined)[] = []

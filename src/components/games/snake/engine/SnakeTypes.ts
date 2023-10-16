@@ -21,6 +21,7 @@ export type SnakePlayer = {
 
 export type SnakeGameData = {
     progression: SnakeLevelProgression | undefined;
+    challenges: SnakeLevelChallenge[] | undefined,
     options: SnakeGameOptions;
     assetStyles: CellStyles;
     grid: GridData;
@@ -50,6 +51,22 @@ export type SnakeLevelPlayerOptions = {
     direction: SnakeGameDirections;
     position: GridCellLocation;
     length: number;
+}
+
+export type SnakeLevelChallengePreview = {
+    title: string;
+    completed: boolean;
+}
+
+export type SnakeLevelChallenge = SnakeLevelChallengePreview & {
+    checkChallengeCompletion: (gameData: SnakeGameData, index: number) => boolean;
+    data: any;
+}
+
+export type SnakeLevelChallengeData = {
+    title: string;
+    type: string;
+    data: any;
 }
 
 export type SnakeLevelProgression = {

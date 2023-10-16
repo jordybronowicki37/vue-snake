@@ -9,19 +9,12 @@ import SnakeScore from "./SnakeScore.vue";
 import SnakeControls from "./SnakeControls.vue";
 import SnakeLevelChallenges from "./SnakeLevelChallenges.vue";
 import {GetLevelData} from "../engine/SnakeStorage.ts";
-import {GetChallengesTexts} from "../levels/SnakeChallengesServer.ts";
+import {GetChallengesData} from "../levels/SnakeChallengesProvider.ts";
 
 const route = useRoute();
 const level = <string>route.params.level;
 const engine = ref<SnakeEngine>(new SnakeEngine(level));
 const showControls = ref<boolean>(true);
-
-const levelProgression = GetLevelData(level);
-const challengesTexts = GetChallengesTexts(level);
-const challengesData: { text: string, completed: boolean }[] = [];
-for (let i = 0; i < challengesTexts.length; i++) {
-  challengesData.push({text: challengesTexts[i], completed: levelProgression.completedChallenges[i]});
-}
 
 setTimeout(() => {
   showControls.value = false;
@@ -53,7 +46,7 @@ setTimeout(() => {
       <div class="game-wrapper">
         <div class="top-bar">
           <div v-if="!['versus', 'battle'].includes(level)">
-            <SnakeLevelChallenges :challenges="challengesData"/>
+            <SnakeLevelChallenges :challenges="engine.gameData.challenges"/>
           </div>
           <SnakeScore :game-data="engine.gameData"/>
         </div>

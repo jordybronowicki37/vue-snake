@@ -71,6 +71,21 @@ export function MoveForward(gameData: SnakeGameData, playerId: number): SnakeGam
         InsertSnakeBodyPiecesIntoGrid(gameData.grid, player.snakeBody);
     }
 
+    // Update challenges
+    if (gameData.challenges !== undefined && gameData.progression !== undefined && playerId === 0) {
+        for (let i = 0; i < gameData.challenges.length; i++) {
+            const challenge = gameData.challenges[i];
+            if (challenge.completed) continue;
+
+            const completed = challenge.checkChallengeCompletion(gameData, i);
+            if (!completed) continue;
+
+            challenge.completed = true;
+            gameData.progression.completedChallenges[i] = true;
+            SaveLevelData(gameData.progression);
+        }
+    }
+
     return gameData;
 }
 
