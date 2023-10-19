@@ -4,7 +4,7 @@
 
 <template>
   <div class="header">
-    <h1>Snake Game</h1>
+    <h1>Snake Master</h1>
     <nav class="links">
       <router-link to="/">Home</router-link>
       <router-link to="/menu">Game-Modes</router-link>
@@ -21,6 +21,13 @@
 }
 .header h1 {
   margin: 0;
+  color: var(--difficulty-2);
+  overflow: hidden;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 3rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
 }
 .links {
   display: flex;
